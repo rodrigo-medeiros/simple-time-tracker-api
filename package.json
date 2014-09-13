@@ -1,0 +1,21 @@
+{
+  "name": "simple-time-tracker",
+  "version": "0.0.1",
+  "description": "A web app to help you control the time spent on your tasks.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node.js",
+    "express.js",
+    "socket.io",
+    "mongodb",
+    "task"
+  ],
+  "author": "Rodrigo Medeiros",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.9"
+  }
+}

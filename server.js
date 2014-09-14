@@ -9,10 +9,13 @@ var routes = require('./routes/index'),
 var app = express();
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.set('port', process.env.PORT || 3000);
 
 app.use('/', routes);
 app.use('/tasks', tasks);
+app.use('/users', users);
 
 // catch 404 and forwardin to error handling
 app.use(function (req, res, next) {
@@ -26,7 +29,7 @@ app.use(function (req, res, next) {
 // development error handler
 // will print stack trace
 if (app.get('env') === 'development') {
-  app.use(function (err, req, res, next()) {
+  app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,

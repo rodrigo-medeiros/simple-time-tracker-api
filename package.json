@@ -20,7 +20,7 @@
     "body-parser": "^1.8.1"
   },
   "devDependencies": {
-    "expect": "^0.1.1",
+    "expect.js": "^0.3.1",
     "mocha": "^1.21.4",
     "superagent": "^0.18.2"
   }

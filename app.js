@@ -1,11 +1,8 @@
 var express = require('express'),
+    routes = require('./routes'),jj
     path = require('path'),
     bodyParser = require('body-parser'),
     http = require('http');
-
-var routes = require('./routes/index'),
-    users = require('./routes/users'),
-    tasks = require('./routes/tasks');
 
 var app = express();
 
@@ -14,9 +11,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('port', process.env.PORT || 3000);
 
-app.use('/', routes);
-app.use('/tasks', tasks);
-app.use('/users', users);
+app.get('/', routes.index);
+//app.use('/tasks', tasks);
+//app.use('/users', users);
 
 // catch 404 and forwardin to error handling
 app.use(function (req, res, next) {
@@ -32,10 +29,10 @@ app.use(function (req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
+    //res.render('error', {
+    //  message: err.message,
+    //  error: err
+    //});
   });
 }
 
@@ -44,10 +41,10 @@ if (app.get('env') === 'development') {
 
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+  //res.render('error', {
+  //  message: err.message,
+  //  error: {}
+  //});
 });
 
 var server = http.createServer(app);
@@ -69,5 +66,3 @@ if (require.main === module) {
   exports.shutdown = shutdown;
   exports.port = app.get('port');
 }
-
-module.exports = app;

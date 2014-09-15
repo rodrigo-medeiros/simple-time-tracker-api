@@ -23,9 +23,8 @@ app.use(function (req, res, next) {
   next(err);
 });
 
-// error handlers
-
 if ('development' === app.get('env')) {
+  // development only...
   app.use(errorhandler());
 }
 

@@ -3,7 +3,10 @@ var express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
     errorhandler = require('errorhandler'),
-    http = require('http');
+    http = require('http'),
+    mongoose = require('mongoose'),
+    dbUrl = process.env.MONGOHQ_URL || 'mongodb://@localhost:27017/simple_time_tracker',
+    db = mongoose.connect(dbUrl, {safe: true});
 
 var app = express();
 
@@ -13,8 +16,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', process.env.PORT || 3000);
 
 app.get('/', routes.index);
-app.use('/tasks', tasks.list);
-app.use('/users', users.list);
+app.use('/tasks', routes.task.list);
+app.use('/users', routes.user.list);
 
 // catch 404 and forwardin to error handling
 app.use(function (req, res, next) {

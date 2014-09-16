@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', process.env.PORT || 3000);
 
 app.get('/', routes.index);
-//app.use('/tasks', tasks);
+app.use('/tasks', tasks);
 //app.use('/users', users);
 
 // catch 404 and forwardin to error handling

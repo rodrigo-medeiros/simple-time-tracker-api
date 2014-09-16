@@ -14,7 +14,7 @@ app.set('port', process.env.PORT || 3000);
 
 app.get('/', routes.index);
 app.use('/tasks', tasks);
-//app.use('/users', users);
+app.use('/users', users);
 
 // catch 404 and forwardin to error handling
 app.use(function (req, res, next) {

@@ -1,14 +1,21 @@
 var express = require('express'),
-    routes = require('./routes'),jj
+    routes = require('./routes'),
     path = require('path'),
     bodyParser = require('body-parser'),
     errorhandler = require('errorhandler'),
     http = require('http'),
     mongoose = require('mongoose'),
+    models = require('./models'),
     dbUrl = process.env.MONGOHQ_URL || 'mongodb://@localhost:27017/simple_time_tracker',
     db = mongoose.connect(dbUrl, {safe: true});
 
 var app = express();
+
+app.use(function (req, res, next) {
+  if (!models.User) return next(new Error('There are no models.'));
+  req.models = models;
+  return next();
+});
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));

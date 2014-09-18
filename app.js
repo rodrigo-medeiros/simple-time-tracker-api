@@ -12,7 +12,7 @@ var express = require('express'),
 var app = express();
 
 app.use(function (req, res, next) {
-  if (!models.User) return next(new Error('There are no models.'));
+  if (!models.User || !models.Task) return next(new Error('There are no models.'));
   req.models = models;
   return next();
 });

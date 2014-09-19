@@ -21,7 +21,9 @@ var userSchema = new mongoose.Schema({
     set: function (value) {
       return value.trim();
     },
-    validate: [ validateEmail, 'Email is empty or not valid.']
+    validate: [ function (email) {
+      return (email.match(/[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i) !== null)
+    }, 'Email is empty or not valid.']
   },
   password: String,
   admin: {
@@ -29,9 +31,5 @@ var userSchema = new mongoose.Schema({
     default: false
   }
 });
-
-var validateEmail = function(email) {
-  return (email.match(/[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i) !== null);
-};
 
 module.exports = mongoose.model('User', userSchema);

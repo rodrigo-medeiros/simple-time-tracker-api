@@ -28,6 +28,9 @@ var taskSchema = mongoose.Schema({
     set: function (value) {
       return value.trim();
     }
+  },
+  timeLogs: {
+    type: [mongoose.Schema.Types.TimeLog]
   }
 });
 

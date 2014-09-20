@@ -9,6 +9,11 @@ var timeLogSchema = mongoose.Schema({
   stopedAt: {
     type: Date,
     required: false
+  },
+  total: {
+    type: Number,
+    required: false,
+    default: 0
   }
 }
 

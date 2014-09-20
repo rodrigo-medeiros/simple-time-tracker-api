@@ -4,7 +4,8 @@
   "description": "A web app to help you control the time spent on your tasks.",
   "main": "server.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "mocha tests/"
   },
   "keywords": [
     "node.js",

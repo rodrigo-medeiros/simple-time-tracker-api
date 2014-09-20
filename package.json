@@ -4,7 +4,7 @@
   "description": "A web app to help you control the time spent on your tasks.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "keywords": [
     "node.js",
@@ -15,13 +15,11 @@
   ],
   "author": "Rodrigo Medeiros",
   "license": "MIT",
-  "scripts": {
-    "start": "node app.js"
-  },
   "dependencies": {
     "body-parser": "^1.8.1",
     "errorhandler": "^1.2.0",
     "express": "^4.9",
+    "moment": "^2.8.3",
     "mongoose": "^3.8.16"
   },
   "devDependencies": {

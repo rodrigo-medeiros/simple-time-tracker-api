@@ -26,17 +26,14 @@ app.get('/', routes.index);
 app.use('/tasks', routes.task.list);
 app.use('/users', routes.user.list);
 
-// catch 404 and forwardin to error handling
-app.use(function (req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
 if ('development' === app.get('env')) {
   // development only...
   app.use(errorhandler());
 }
+
+app.all('*', function (req, res) {
+  res.send(404);
+});
 
 var server = http.createServer(app);
 var boot = function () {

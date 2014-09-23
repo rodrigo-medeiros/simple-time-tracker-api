@@ -9,6 +9,7 @@ var boot = require('../app').boot,
 describe('Server', function () {
   before(function () {
     boot();
+    models.Task.remove({}).exec();
   });
   describe('Homepage', function () {
     before(function () {
@@ -19,7 +20,6 @@ describe('Server', function () {
       };
       models.Task.create(task, function (error, taskResponse) {
         if (error) return error;
-        console.info('Created task ' + task.name);
       });
     });
     it('should respond to GET', function (done) {

@@ -6,14 +6,14 @@ var taskSchema = mongoose.Schema({
     required: true,
     default: 'New task',
     validate: [ function (value) {
-      return value <= 30;
+      return value.length <= 30;
     }, 'Task name is too long.']
   },
   description: {
     type: String,
     required: false,
     validate: [ function (value) {
-      return value <= 150;
+      return value.length <= 150;
     }, 'Task description is too long.']
   },
   status: {

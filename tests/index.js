@@ -13,10 +13,18 @@ describe('Server', function () {
   });
   describe('Homepage', function () {
     before(function () {
+      var log = {
+        startedAt: moment('2014-01-01 09:00').toDate(),
+        stopedAt: moment('2014-01-01 09:15').toDate()
+      };
+      var timeLog = models.TimeLog.create(log, function (error, timeLogResponse) {
+        if (error) return error;
+      });
       var task = {
         name: 'Make something',
         description: "Make sure it's something useful",
-        status: 'Open'
+        status: 'Open',
+        logs: [timeLog]
       };
       models.Task.create(task, function (error, taskResponse) {
         if (error) return error;

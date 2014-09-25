@@ -9,7 +9,8 @@ var timeLogSchema = mongoose.Schema({
   stopedAt: {
     type: Date,
     required: false
-  }
+  },
+  task: {type: mongoose.Schema.ObjectId, ref: 'Task'}
 });
 
 module.exports = mongoose.model('TimeLog', timeLogSchema);

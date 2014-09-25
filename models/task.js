@@ -29,9 +29,7 @@ var taskSchema = mongoose.Schema({
       return value.trim();
     }
   },
-  timeLogs: {
-    type: [mongoose.Schema.Types.TimeLog]
-  }
+  timeLogs: [{type: mongoose.Schema.ObjectId, ref: 'TimeLog'}]
 });
 
 module.exports = mongoose.model('Task', taskSchema);

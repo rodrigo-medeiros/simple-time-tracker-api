@@ -23,8 +23,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', process.env.PORT || 3000);
 
 app.get('/', routes.index);
-app.use('/tasks', routes.task.list);
-app.use('/users', routes.user.list);
+app.get('/tasks', routes.task.list);
+app.get('/users', routes.user.list);
 
 if ('development' === app.get('env')) {
   // development only...

@@ -23,6 +23,14 @@ describe('Server', function () {
           done();
         });
     });
+    it('should return a task when responding to GET', function (done) {
+      superagent
+        .get('http://localhost:' + port)
+        .end(function (res) {
+          expect(JSON.parse(res.body)[0]).to.have.keys('name', 'description', 'status', 'timeLogs');
+          done();
+        });
+    });
   });
   after(function () {
     shutdown();

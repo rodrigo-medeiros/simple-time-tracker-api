@@ -2,6 +2,7 @@ var boot = require('../app').boot,
     shutdown = require('../app').shutdown,
     port = require('../app').port,
     models = require('../models'),
+    environment = require('./test_environment'),
     superagent = require('superagent'),
     expect = require('expect.js'),
     moment = require('moment');
@@ -9,11 +10,11 @@ var boot = require('../app').boot,
 describe('Server', function () {
   before(function () {
     boot();
-    cleanDb();
+    environment.cleanDb();
   });
   describe('Homepage', function () {
     before(function () {
-      createTaskWithTimeLog();
+      environment.createTaskWithTimeLog();
     })
     it('should respond to GET', function (done) {
       superagent
@@ -37,31 +38,4 @@ describe('Server', function () {
   });
 });
 
-function createTaskWithTimeLog() {
-  var log = {
-    startedAt: moment('2014-01-01 09:05').toDate(),
-    stopedAt: moment('2014-01-01 09:15').toDate()
-  };
-  models.TimeLog.create(log, function (error, timeLogResponse) {
-    if (error) return error;
-    var task = {
-      name: 'Make something',
-      description: "Make sure it's something useful",
-      status: 'Open',
-      timeLogs: []
-    };
-    models.Task.create(task, function (error, taskResponse) {
-      if (error) return error;
-      taskResponse.timeLogs.push(timeLogResponse);
-      taskResponse.save();
-      timeLogResponse.task = taskResponse;
-      timeLogResponse.save();
-    });
-  });
-}
-
-function cleanDb() {
-  models.Task.remove({}).exec();
-  models.TimeLog.remove({}).exec();
-}
 

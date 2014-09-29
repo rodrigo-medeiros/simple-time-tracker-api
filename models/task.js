@@ -24,12 +24,20 @@ var taskSchema = mongoose.Schema({
       return ['Open', 'In Progress', 'Closed'].some(function (item) {
         return item === value;
       });
-    }, 'Not a valid status' ],
+    }, 'not a valid status' ],
     set: function (value) {
       return value.trim();
     }
   },
   timeLogs: [{type: mongoose.Schema.ObjectId, ref: 'TimeLog'}]
+});
+
+taskSchema.static({
+  list: function (callback) {
+    this.findOne({ status: 'Open' })
+      populate().exec(callback);
+    //this.find({}, null, callback);
+  }
 });
 
 module.exports = mongoose.model('Task', taskSchema);

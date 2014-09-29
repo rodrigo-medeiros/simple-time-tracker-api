@@ -3,24 +3,24 @@ var Task = require('../models').Task,
     moment = require('moment');
 
 exports.createTaskWithTimeLog = function () {
-  var log = {
-    startedAt: moment('2014-01-01 09:05').toDate(),
-    stopedAt: moment('2014-01-01 09:15').toDate()
-  };
-  TimeLog.create(log, function (error, timeLogResponse) {
+  var task = new Task({
+    name: 'Make something',
+    description: "Make sure it's something useful",
+    status: 'Open'
+  });
+
+  task.save(function (error) {
     if (error) return error;
-    var task = {
-      name: 'Make something',
-      description: "Make sure it's something useful",
-      status: 'Open',
-      timeLogs: []
-    };
-    Task.create(task, function (error, taskResponse) {
+
+    var log = new TimeLog({
+      name: 'Blah',
+      startedAt: moment('2014-01-01 09:05').toDate(),
+      stopedAt: moment('2014-01-01 09:15').toDate(),
+      task: task._id
+    });
+
+    log.save(function (error) {
       if (error) return error;
-      taskResponse.timeLogs.push(timeLogResponse);
-      taskResponse.save();
-      timeLogResponse.task = taskResponse;
-      timeLogResponse.save();
     });
   });
 }

@@ -32,4 +32,10 @@ var userSchema = new mongoose.Schema({
   }
 });
 
+userSchema.static({
+  list: function (callback) {
+    this.find({}, null, {sort: {_id:-1}}, callback);
+  }
+});
+
 module.exports = mongoose.model('User', userSchema);

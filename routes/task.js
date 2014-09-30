@@ -1,7 +1,7 @@
 exports.list = function (req, res, next) {
-  req.models.Task.list(function (error, tasks) {
-    if (error) return next(error);
-    res.json(tasks);
+  req.models.Task.find({}).populate('timeLogs').exec(function (error, tasks) {
+    if (error) return error;
+    res.json(tasks).end();
   });
 }
 

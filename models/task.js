@@ -29,15 +29,7 @@ var taskSchema = mongoose.Schema({
       return value.trim();
     }
   },
-  timeLogs: [{type: mongoose.Schema.ObjectId, ref: 'TimeLog'}]
-});
-
-taskSchema.static({
-  list: function (callback) {
-    this.findOne({ status: 'Open' })
-      populate().exec(callback);
-    //this.find({}, null, callback);
-  }
+  timeLogs: [{type: mongoose.Schema.Types.ObjectId, ref: 'TimeLog'}]
 });
 
 module.exports = mongoose.model('Task', taskSchema);

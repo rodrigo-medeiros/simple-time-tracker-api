@@ -13,14 +13,7 @@ var timeLogSchema = mongoose.Schema({
     type: Date,
     required: false
   },
-  task: {type: mongoose.Schema.ObjectId, ref: 'Task'}
-});
-
-timeLogSchema.static({
-  find: function (taskId, callback) {
-    this.findOne({ name: 'Blah'})
-      .populate('task').exec(callback);
-  }
+  task: {type: mongoose.Schema.Types.ObjectId, ref: 'Task'}
 });
 
 module.exports = mongoose.model('TimeLog', timeLogSchema);

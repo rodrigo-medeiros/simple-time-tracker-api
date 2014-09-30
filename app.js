@@ -22,7 +22,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('port', process.env.PORT || 3000);
 
-//app.get('/', routes.index);
 app.get('/tasks', routes.task.list);
 app.get('/users', routes.user.list);
 

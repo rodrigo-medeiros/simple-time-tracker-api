@@ -28,8 +28,9 @@ describe('Server', function () {
       superagent
         .get('http://localhost:' + port + '/tasks')
         .end(function (res) {
-          console.log(res.body);
-          expect(res.body).to.have.keys('name', 'description', 'status', 'timeLogs');
+          var tasks = res.body.tasks;
+          expect(tasks).to.have.length(1);
+          expect(tasks[0]).to.have.keys('name', 'description', 'status', 'logs');
           done();
         });
     });

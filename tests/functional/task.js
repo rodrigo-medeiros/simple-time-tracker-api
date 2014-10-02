@@ -31,6 +31,8 @@ describe('Server', function () {
           var tasks = res.body.tasks;
           expect(tasks).to.have.length(1);
           expect(tasks[0]).to.have.keys('name', 'description', 'status', 'logs');
+          expect(tasks[0].logs).to.have.length(1);
+          expect(tasks[0].logs[0]).to.have.keys('startedAt', 'stopedAt', 'task');
           done();
         });
     });

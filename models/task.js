@@ -29,7 +29,7 @@ var taskSchema = mongoose.Schema({
       return value.trim();
     }
   },
-  worklogs: [{type: mongoose.Schema.Types.ObjectId, ref: 'TimeLog'}]
+  worklogs: [{type: mongoose.Schema.Types.ObjectId, ref: 'WorkLog'}]
 });
 
 taskSchema.static({

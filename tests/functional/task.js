@@ -14,7 +14,7 @@ describe('Tasks routes', function () {
   });
   describe('GET', function () {
     before(function () {
-      environment.createTaskWithTimeLog();
+      environment.createTaskWithWorkLog();
     })
     it('should respond 200', function (done) {
       superagent
@@ -32,7 +32,7 @@ describe('Tasks routes', function () {
           expect(tasks).to.have.length(1);
           expect(tasks[0]).to.have.keys('name', 'description', 'status', 'worklogs');
           expect(tasks[0].worklogs).to.have.length(1);
-          expect(tasks[0].worklogs[0]).to.have.keys('startedAt', 'stopedAt', 'task');
+          expect(tasks[0].worklogs[0]).to.have.keys('startedAt', 'timeSpent', 'task');
           done();
         });
     });

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var timeLogSchema = mongoose.Schema({
+var workLogSchema = mongoose.Schema({
   name: {
     type: String
   },
@@ -9,11 +9,14 @@ var timeLogSchema = mongoose.Schema({
     required: true,
     default: Date.now
   },
-  stopedAt: {
-    type: Date,
-    required: false
+  timeSpent: {
+    type: Number,
+    required: true,
+    validate: [ function (value) {
+      return value > 0;
+    }, 'Time spent must be greater than zero.' ]
   },
   task: {type: mongoose.Schema.Types.ObjectId, ref: 'Task'}
 });
 
-module.exports = mongoose.model('TimeLog', timeLogSchema);
+module.exports = mongoose.model('WorkLog', workLogSchema);

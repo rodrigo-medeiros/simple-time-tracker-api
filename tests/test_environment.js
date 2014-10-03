@@ -8,14 +8,14 @@ exports.createTaskWithTimeLog = function () {
     name: 'Make something',
     description: "Make sure it's something useful",
     status: 'Open',
-    logs: [ new ObjectId ]
+    worklogs: [ new ObjectId ]
   });
 
   task.save(function (error) {
     if (error) return error;
 
     var log = new TimeLog({
-      _id: task.logs[0],
+      _id: task.worklogs[0],
       startedAt: moment('2014-01-01 09:05').toDate(),
       stopedAt: moment('2014-01-01 09:15').toDate(),
       task: task._id

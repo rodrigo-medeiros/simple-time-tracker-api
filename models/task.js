@@ -29,12 +29,12 @@ var taskSchema = mongoose.Schema({
       return value.trim();
     }
   },
-  logs: [{type: mongoose.Schema.Types.ObjectId, ref: 'TimeLog'}]
+  worklogs: [{type: mongoose.Schema.Types.ObjectId, ref: 'TimeLog'}]
 });
 
 taskSchema.static({
   list: function (callback) {
-    this.find({}).populate('logs').exec(callback);
+    this.find({}).populate('worklogs').exec(callback);
   }
 });
 

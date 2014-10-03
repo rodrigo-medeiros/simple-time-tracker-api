@@ -7,16 +7,16 @@ var boot = require('../../app').boot,
     expect = require('expect.js'),
     moment = require('moment');
 
-describe('Server', function () {
+describe('Tasks routes', function () {
   before(function () {
     boot();
     environment.cleanDb();
   });
-  describe('Homepage', function () {
+  describe('GET', function () {
     before(function () {
       environment.createTaskWithTimeLog();
     })
-    it('should respond to GET', function (done) {
+    it('should respond 200', function (done) {
       superagent
         .get('http://localhost:' + port + '/tasks')
         .end(function (res) {
@@ -24,20 +24,21 @@ describe('Server', function () {
           done();
         });
     });
-    it('should return a task when responding to GET', function (done) {
+    it('should return a task with one worklog', function (done) {
       superagent
         .get('http://localhost:' + port + '/tasks')
         .end(function (res) {
           var tasks = res.body.tasks;
           expect(tasks).to.have.length(1);
-          expect(tasks[0]).to.have.keys('name', 'description', 'status', 'logs');
-          expect(tasks[0].logs).to.have.length(1);
-          expect(tasks[0].logs[0]).to.have.keys('startedAt', 'stopedAt', 'task');
+          expect(tasks[0]).to.have.keys('name', 'description', 'status', 'worklogs');
+          expect(tasks[0].worklogs).to.have.length(1);
+          expect(tasks[0].worklogs[0]).to.have.keys('startedAt', 'stopedAt', 'task');
           done();
         });
     });
   });
   after(function () {
     shutdown();
+    environment.cleanDb();
   });
 });

@@ -22,8 +22,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('port', process.env.PORT || 3000);
 
-app.get('/tasks', routes.task.list);
-app.get('/users', routes.user.list);
+var router = express.Router();
+
+router.get('/tasks', routes.task.list);
+router.get('/users', routes.user.list);
+app.use('/api', router);
 
 if ('development' === app.get('env')) {
   // development only...

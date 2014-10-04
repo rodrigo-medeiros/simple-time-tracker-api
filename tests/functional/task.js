@@ -3,6 +3,7 @@ var boot = require('../../app').boot,
     port = require('../../app').port,
     models = require('../../models'),
     environment = require('./../test-environment'),
+    url = require('url'),
     superagent = require('superagent'),
     expect = require('expect.js'),
     moment = require('moment');
@@ -15,10 +16,16 @@ describe('Tasks routes', function () {
   describe('GET', function () {
     before(function () {
       environment.createTaskWithWorkLog();
-    })
+    });
+    var URL = url.format({
+      protocol: 'http',
+      hostname: 'localhost',
+      port: 3000,
+      pathname: 'api/tasks'
+    });
     it('should respond 200', function (done) {
       superagent
-        .get('http://localhost:' + port + '/tasks')
+        .get(URL)
         .end(function (res) {
           expect(res.status).to.equal(200);
           done();
@@ -26,7 +33,7 @@ describe('Tasks routes', function () {
     });
     it('should return a task with one worklog', function (done) {
       superagent
-        .get('http://localhost:' + port + '/tasks')
+        .get(URL)
         .end(function (res) {
           var tasks = res.body.tasks;
           expect(tasks).to.have.length(1);

@@ -29,7 +29,8 @@ var taskSchema = mongoose.Schema({
       return value.trim();
     }
   },
-  worklogs: [{type: mongoose.Schema.Types.ObjectId, ref: 'WorkLog'}]
+  worklogs: [{type: mongoose.Schema.Types.ObjectId, ref: 'WorkLog'}],
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 taskSchema.static({

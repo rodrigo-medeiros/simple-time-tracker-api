@@ -15,6 +15,7 @@ describe('Tasks routes', function () {
   });
   describe('GET', function () {
     before(function () {
+      environment.createUser();
       environment.createTaskWithWorkLog();
     });
     var URL = url.format({
@@ -46,6 +47,6 @@ describe('Tasks routes', function () {
   });
   after(function () {
     shutdown();
-    environment.cleanDb();
+//    environment.cleanDb();
   });
 });

@@ -25,7 +25,10 @@ var userSchema = new mongoose.Schema({
       return (email.match(/[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i) !== null)
     }, 'Email is empty or not valid.']
   },
-  password: String,
+  password: {
+    type: String,
+    required: true
+  },
   admin: {
     type: Boolean,
     default: false

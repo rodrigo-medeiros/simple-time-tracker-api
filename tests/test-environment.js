@@ -5,29 +5,23 @@ var Task = require('../models').Task,
     moment = require('moment');
 
 function createTaskWithWorkLog () {
-  createUser();
+  var task = new Task({
+    name: 'Make something',
+    description: "Make sure it's something useful",
+    status: 'Open',
+    worklogs: [ new ObjectId ],
+    user: new ObjectId
+  });
 
-  User.findOne({
-    firstName: 'Arya'
-  }, function (error, user) {
-
-    var task = new Task({
-      name: 'Make something',
-      description: "Make sure it's something useful",
-      status: 'Open',
-      worklogs: [ new ObjectId ],
-      user: user._id
-    });
-
-    task.save(function (error) {
-      if (error) return error;
-      createWorkLog(task);
-    });
+  task.save(function (error) {
+    if (error) return error;
+    createWorkLog(task);
+    //createUser(false, task);
   });
 }
 
 function createWorkLog (task) {
-   var log = new WorkLog({
+  var log = new WorkLog({
     _id: task.worklogs[0],
     startedAt: moment('2014-01-01 09:05').toDate(),
     timeSpent: 3600,
@@ -39,8 +33,9 @@ function createWorkLog (task) {
   });
 }
 
-function createUser (isAdmin) {
+function createUser (isAdmin, task) {
   var user = new User({
+    _id: task.user,
     firstName: 'Arya',
     lastName: 'Stark',
     email: 'arya@winterfell.com',
@@ -56,8 +51,9 @@ function createUser (isAdmin) {
 exports.cleanDb = function () {
   Task.remove({}).exec();
   WorkLog.remove({}).exec();
+  User.remove({}).exec();
 }
 
-exports.createUser = createUser;
 exports.createTaskWithWorkLog = createTaskWithWorkLog;
 exports.createWorkLog = createWorkLog;
+exports.createUser = createUser;

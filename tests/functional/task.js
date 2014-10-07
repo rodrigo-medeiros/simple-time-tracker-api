@@ -38,7 +38,7 @@ describe('Tasks routes', function () {
         .end(function (res) {
           var tasks = res.body.tasks;
           expect(tasks).to.have.length(1);
-          expect(tasks[0]).to.have.keys('name', 'description', 'status', 'worklogs');
+          expect(tasks[0]).to.have.keys('name', 'description', 'status', 'worklogs', 'user');
           expect(tasks[0].worklogs).to.have.length(1);
           expect(tasks[0].worklogs[0]).to.have.keys('startedAt', 'timeSpent', 'task');
           done();
@@ -47,6 +47,6 @@ describe('Tasks routes', function () {
   });
   after(function () {
     shutdown();
-//    environment.cleanDb();
+    environment.cleanDb();
   });
 });

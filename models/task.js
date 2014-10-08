@@ -35,7 +35,7 @@ var taskSchema = mongoose.Schema({
 
 taskSchema.static({
   list: function (callback) {
-    this.find({}).populate('worklogs').exec(callback);
+    this.find({}).populate('worklogs').populate('user').exec(callback);
   }
 });
 

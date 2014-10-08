@@ -16,7 +16,7 @@ function createTaskWithWorkLog () {
   task.save(function (error) {
     if (error) return error;
     createWorkLog(task);
-    //createUser(false, task);
+    createUser(false, task);
   });
 }
 

@@ -46,6 +46,6 @@ describe('Tasks routes', function () {
   });
   after(function () {
     shutdown();
-    environment.cleanDb();
+    //environment.cleanDb();
   });
 });

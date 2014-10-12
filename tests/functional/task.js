@@ -8,12 +8,12 @@ var boot = require('../../app').boot,
     expect = require('expect.js'),
     moment = require('moment');
 
-describe('Tasks routes', function () {
+describe('Tasks GET routes', function () {
   before(function () {
     boot();
     environment.cleanDb();
   });
-  describe('GET', function () {
+  describe('/api/tasks should return a task', function () {
     before(function () {
       environment.createTaskWithWorkLog();
     });
@@ -35,11 +35,14 @@ describe('Tasks routes', function () {
       superagent
         .get(URL)
         .end(function (res) {
-          var tasks = res.body.tasks;
+          var tasks = res.body.tasks
+              worklogs = tasks[0].worklogs
+              user = tasks[0].user;
           expect(tasks).to.have.length(1);
           expect(tasks[0]).to.have.keys('name', 'description', 'status', 'worklogs', 'user');
-          expect(tasks[0].worklogs).to.have.length(1);
-          expect(tasks[0].worklogs[0]).to.have.keys('startedAt', 'timeSpent', 'task');
+          expect(worklogs).to.have.length(1);
+          expect(worklogs[0]).to.have.keys('startedAt', 'timeSpent', 'task');
+          expect(user).to.have.keys('firstName', 'lastName', 'email', 'admin');
           done();
         });
     });

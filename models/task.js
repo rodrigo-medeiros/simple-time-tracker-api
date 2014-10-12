@@ -36,8 +36,7 @@ var taskSchema = mongoose.Schema({
 taskSchema.static({
   list: function (callback) {
     this.find({})
-    .populate('worklogs')
-    .populate('user')
+    .populate(['worklogs', 'user'])
     .exec(callback);
   },
 
@@ -50,7 +49,7 @@ taskSchema.static({
       sort: { _id: -1 }
     })
     .populate('worklogs')
-    .populate('user', 'email')
+    .populate('user', '-password')
     .exec(callback);
   }
 });

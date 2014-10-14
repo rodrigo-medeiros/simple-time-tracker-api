@@ -36,8 +36,15 @@ var taskSchema = mongoose.Schema({
 taskSchema.static({
   list: function (callback) {
     this.find({})
-    .populate(['worklogs', 'user'])
-    .exec(callback);
+      .populate(['worklogs', 'user'])
+      .exec(callback);
+  },
+
+  findById: function (id, callback) {
+    this.findById(id)
+      .populate('worklogs')
+      .populate('user', '-password')
+      .exec(callback);
   },
 
   findByUserId: function (userId, callback) {
@@ -48,9 +55,9 @@ taskSchema.static({
     {
       sort: { _id: -1 }
     })
-    .populate('worklogs')
-    .populate('user', '-password')
-    .exec(callback);
+      .populate('worklogs')
+      .populate('user', '-password')
+      .exec(callback);
   }
 });
 

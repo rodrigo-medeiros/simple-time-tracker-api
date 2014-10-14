@@ -5,6 +5,16 @@ exports.list = function (req, res, next) {
   });
 }
 
+exports.findById = function (req, res, next) {
+  var id = req.params.id;
+  req.models.Task.findById(
+    userId,
+    function (error, task) {
+      if (error) return error;
+      res.send({ task: task }).end();
+  });
+}
+
 exports.findByUser = function (req, res, next) {
   var userId = req.params.userId;
   req.models.Task.findByUserId(

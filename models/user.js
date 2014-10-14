@@ -15,6 +15,13 @@ var userSchema = new mongoose.Schema({
       return value.length <= 30;
     }, 'Last name is too long.']
   },
+  username: {
+    type: String,
+    required: true,
+    validate: [ function (value) {
+      return value.lenght <= 20;
+    }, 'Username is too long.']
+  },
   email: {
     type: String,
     required: true,

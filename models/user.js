@@ -19,7 +19,7 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: [ function (value) {
-      return value.lenght <= 20;
+      return value.length <= 20;
     }, 'Username is too long.']
   },
   email: {

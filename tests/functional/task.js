@@ -42,13 +42,13 @@ describe('Tasks GET routes', function () {
           expect(tasks[0]).to.have.keys('name', 'description', 'status', 'worklogs', 'user');
           expect(worklogs).to.have.length(1);
           expect(worklogs[0]).to.have.keys('startedAt', 'timeSpent', 'task');
-          expect(user).to.have.keys('firstName', 'lastName', 'email', 'admin');
+          expect(user).to.have.keys('firstName', 'lastName', 'username', 'email', 'admin');
           done();
         });
     });
   });
   after(function () {
     shutdown();
-    //environment.cleanDb();
+    environment.cleanDb();
   });
 });

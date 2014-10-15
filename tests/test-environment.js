@@ -38,6 +38,7 @@ function createUser (isAdmin, task) {
     _id: task.user,
     firstName: 'Arya',
     lastName: 'Stark',
+    username: 'aryastark',
     email: 'arya@winterfell.com',
     password: '1234',
     admin: isAdmin || false

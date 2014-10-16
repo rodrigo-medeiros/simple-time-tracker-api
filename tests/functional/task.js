@@ -13,7 +13,7 @@ describe('Tasks GET routes', function () {
     boot();
     environment.cleanDb();
   });
-  describe('/api/tasks should return a task', function () {
+  describe('/api/tasks', function () {
     before(function () {
       environment.createTaskWithWorkLog();
     });
@@ -43,6 +43,26 @@ describe('Tasks GET routes', function () {
           expect(worklogs).to.have.length(1);
           expect(worklogs[0]).to.have.keys('startedAt', 'timeSpent', 'task');
           expect(user).to.have.keys('firstName', 'lastName', 'username', 'email', 'admin');
+          done();
+        });
+    });
+  });
+
+  describe('/api/tasks/:id', function () {
+    before(function () {
+      environment.createTaskWithWorkLog();
+    });
+    var URL = url.format({
+      protocol: 'http',
+      hostname: 'localhost',
+      port: 3000,
+      pathname: 'api/tasks'
+    });
+    it('should respond 200', function (done) {
+      superagent
+        .get(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(200);
           done();
         });
     });

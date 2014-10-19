@@ -1,17 +1,12 @@
-exports.list = function (req, res, next) {
-  req.models.Task.list(function (error, tasks) {
-    if (error) return error;
-    res.send({ tasks: tasks }).end();
-  });
-}
-
 exports.findById = function (req, res, next) {
   var id = req.params.id;
   req.models.Task.findById(
-    userId,
+    id, 
     function (error, task) {
-      if (error) return error;
-      res.send({ task: task }).end();
+      if (error) return next(error);
+      if (!task)
+        return res.status(404).end();
+      res.send({ task: task });
   });
 }
 
@@ -20,7 +15,7 @@ exports.findByUser = function (req, res, next) {
   req.models.Task.findByUserId(
     userId,
     function (error, tasks) {
-      if (error) return error;
+      if (error) return next(error);
       res.send({ tasks: tasks }).end();
   });
 }

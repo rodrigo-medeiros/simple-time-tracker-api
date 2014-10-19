@@ -13,7 +13,7 @@ describe('Tasks GET routes', function () {
     boot();
     environment.cleanDb();
   });
-  describe('/api/tasks', function () {
+  describe('/api/task/:id', function () {
     before(function () {
       environment.createTaskWithWorkLog();
     });
@@ -21,48 +21,13 @@ describe('Tasks GET routes', function () {
       protocol: 'http',
       hostname: 'localhost',
       port: 3000,
-      pathname: 'api/tasks'
+      pathname: 'api/task/5210a64f846cb004b5000001'
     });
-    it('should respond 200', function (done) {
+    it('should respond 404', function (done) {
       superagent
         .get(URL)
         .end(function (res) {
-          expect(res.status).to.equal(200);
-          done();
-        });
-    });
-    it('should return a task with one worklog', function (done) {
-      superagent
-        .get(URL)
-        .end(function (res) {
-          var tasks = res.body.tasks
-              worklogs = tasks[0].worklogs
-              user = tasks[0].user;
-          expect(tasks).to.have.length(1);
-          expect(tasks[0]).to.have.keys('name', 'description', 'status', 'worklogs', 'user');
-          expect(worklogs).to.have.length(1);
-          expect(worklogs[0]).to.have.keys('startedAt', 'timeSpent', 'task');
-          expect(user).to.have.keys('firstName', 'lastName', 'username', 'email', 'admin');
-          done();
-        });
-    });
-  });
-
-  describe('/api/tasks/:id', function () {
-    before(function () {
-      environment.createTaskWithWorkLog();
-    });
-    var URL = url.format({
-      protocol: 'http',
-      hostname: 'localhost',
-      port: 3000,
-      pathname: 'api/tasks'
-    });
-    it('should respond 200', function (done) {
-      superagent
-        .get(URL)
-        .end(function (res) {
-          expect(res.status).to.equal(200);
+          expect(res.status).to.equal(404);
           done();
         });
     });

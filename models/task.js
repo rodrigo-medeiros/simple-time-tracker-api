@@ -34,19 +34,6 @@ var taskSchema = mongoose.Schema({
 });
 
 taskSchema.static({
-  list: function (callback) {
-    this.find({})
-      .populate(['worklogs', 'user'])
-      .exec(callback);
-  },
-
-  findById: function (id, callback) {
-    this.findById(id)
-      .populate('worklogs')
-      .populate('user', '-password')
-      .exec(callback);
-  },
-
   findByUserId: function (userId, callback) {
     this.find({
       user: userId

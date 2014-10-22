@@ -18,11 +18,10 @@ describe('Tasks GET routes', function () {
   before(function () {
     boot();
     environment.cleanDb();
+    environment.createTaskWithWorkLog();
   });
   describe('/api/task/:id', function () {
-    before(function () {
-      environment.createTaskWithWorkLog();
-    });
+
     it('should respond 404', function (done) {
       URL.pathname = 'api/task/5210a64f846cb004b5000001'
 
@@ -46,7 +45,22 @@ describe('Tasks GET routes', function () {
           });
       });
     });
+
+    it('should return one task', function (done) {
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id;
+
+        superagent
+          .get(URL)
+          .end(function (res) {
+            var task = res.body.task;
+            expect(task).to.have.keys('name', 'description', 'user', 'worklogs', 'status');
+            done();
+          });
+      });
+    });
   });
+
   after(function () {
     shutdown();
     environment.cleanDb();

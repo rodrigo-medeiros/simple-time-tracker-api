@@ -6,7 +6,7 @@ exports.findById = function (req, res, next) {
       if (error) return next(error);
       if (!task)
         return res.status(404).end();
-      res.send({ task: task });
+      res.json({ task: task });
   });
 }
 

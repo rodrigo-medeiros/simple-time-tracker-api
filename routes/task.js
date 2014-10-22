@@ -11,12 +11,14 @@ exports.findById = function (req, res, next) {
 }
 
 exports.findByUser = function (req, res, next) {
-  var userId = req.params.userId;
+  var userId = req.params.id;
   req.models.Task.findByUserId(
     userId,
     function (error, tasks) {
       if (error) return next(error);
-      res.send({ tasks: tasks }).end();
+      if (!tasks || !tasks.length)
+        return res.status(404).end();
+      res.json({ tasks: tasks });
   });
 }
 

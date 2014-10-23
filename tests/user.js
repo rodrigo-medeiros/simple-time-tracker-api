@@ -21,10 +21,10 @@ describe('User GET routes', function () {
     environment.createTaskWithWorkLog();
   });
 
-  describe('api/user/:id/tasks', function () {
+  describe('api/user/:id', function () {
 
     it('should respond 404', function (done) {
-      URL.pathname = 'api/user/5210a64f846cb004b5000001/tasks';
+      URL.pathname = 'api/user/5210a64f846cb004b5000001';
 
       superagent
         .get(URL)
@@ -33,6 +33,37 @@ describe('User GET routes', function () {
           done();
         });
     });
+
+    it('should respond 200', function (done) {
+      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+        URL.pathname = 'api/user/' + user._id;
+
+        superagent
+         .get(URL)
+         .end(function (res) {
+           expect(res.status).to.equal(200);
+           done();
+         });
+      });
+    });
+
+    it('should return a user', function (done) {
+      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+        URL.pathname = 'api/user/' + user._id;
+
+        superagent
+         .get(URL)
+         .end(function (res) {
+           var user = res.body.user;
+           expect(user).to.be.ok();
+           expect(user).to.have.keys('firstName', 'lastName', 'username', 'email', 'admin');
+           done();
+         });
+      });
+    });
+  });
+
+  describe('api/user/:id/tasks', function () {
   });
 
   after(function () {

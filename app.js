@@ -25,8 +25,8 @@ app.set('port', process.env.PORT || 3000);
 var router = express.Router();
 
 router.get('/task/:id', routes.task.findById);
-router.get('/user/:id/tasks', routes.task.findByUser);
-router.get('/users', routes.user.list);
+router.get('/user/:id', routes.user.findById);
+router.get('/user/:id/tasks', routes.user.getTasks);
 app.use('/api', router);
 
 if ('development' === app.get('env')) {

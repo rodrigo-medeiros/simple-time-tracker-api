@@ -64,6 +64,30 @@ describe('User GET routes', function () {
   });
 
   describe('api/user/:id/tasks', function () {
+
+    it('should respond 404', function (done) {
+      URL.pathname = 'api/user/5210a64f846cb004b5000001/tasks';
+
+      superagent
+        .get(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(404);
+          done();
+      });
+    });
+
+    it('should respond 200', function (done) {
+      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+        URL.pathname = 'api/user/' + user._id + '/tasks';
+
+        superagent
+          .get(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(200);
+            done();
+        });
+      });
+    });
   });
 
   after(function () {

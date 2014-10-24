@@ -19,10 +19,8 @@ exports.getTasks = function (req, res, next) {
       if (!user)
         return res.status(404).end();
 
-      req.models.Task.find(
-        { user: user._id },
-        null,
-        { sort: {_id: -1 }},
+      req.models.Task.findByUserId(
+        user._id,
         function (error, tasks) {
           if (error) return next(error);
           if (!tasks || !tasks.length)

@@ -88,6 +88,26 @@ describe('User GET routes', function () {
         });
       });
     });
+
+    it('should return a task', function (done) {
+      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+        URL.pathname = 'api/user/' + user._id + '/tasks';
+
+        superagent
+          .get(URL)
+          .end(function (res) {
+            var tasks = res.body.tasks;
+
+            expect(tasks).to.not.be.empty();
+            expect(tasks).to.have.length(1);
+
+            var task = tasks[0];
+
+            expect(task).to.have.keys('name', 'description', 'status', 'worklogs', 'user');
+            done();
+        });
+      });
+    });
   });
 
   after(function () {

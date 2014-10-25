@@ -31,26 +31,32 @@ var taskSchema = mongoose.Schema({
   },
   worklogs: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'WorkLog',
-    select: false
+    ref: 'WorkLog'
   }],
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    select: false
+    ref: 'User'
   }
 });
 
 taskSchema.static({
+  findByName: function (name, callback) {
+    this.findOne({
+      name: name
+    })
+      .populate('user', 'username -_id')
+      .select('-worklogs -_id -__v')
+      .sort({ _id: -1 })
+      .exec(callback);
+  },
+
   findByUserId: function (userId, callback) {
     this.find({
       user: userId
-    },
-    null,
-    {
-      sort: { _id: -1 }
     })
-      .populate('-user', '-worklogs')
+      .populate('user', 'username -_id')
+      .select('-worklogs -_id -__v')
+      .sort({ _id: -1 })
       .exec(callback);
   }
 });

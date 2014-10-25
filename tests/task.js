@@ -20,13 +20,13 @@ describe('Task GET routes', function () {
     environment.cleanDb();
     environment.createTaskWithWorkLog();
   });
-  describe('/api/task/:id', function () {
+  describe('/api/task/:name', function () {
 
     it('should respond 404', function (done) {
-      URL.pathname = 'api/task/5210a64f846cb004b5000001'
+      URL.pathname = 'api/task/not a valid task'
 
       superagent
-        .get(url.format(URL))
+        .get(URL)
         .end(function (res) {
           expect(res.status).to.equal(404);
           done();
@@ -34,30 +34,24 @@ describe('Task GET routes', function () {
     });
 
     it('should respond 200', function (done) {
-      models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id;
-
-        superagent
-          .get(URL)
-          .end(function (res) {
-            expect(res.status).to.equal(200);
-            done();
-          });
-      });
+      URL.pathname = 'api/task/' + 'Kill the Lannisters';
+      superagent
+        .get(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
     });
 
     it('should return one task', function (done) {
-      models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id;
-
-        superagent
-          .get(URL)
-          .end(function (res) {
-            var task = res.body.task;
-            expect(task).to.have.keys('name', 'description', 'status');
-            done();
-          });
-      });
+      URL.pathname = 'api/task/' + 'Kill the Lannisters';
+      superagent
+        .get(URL)
+        .end(function (res) {
+          var task = res.body.task;
+          expect(task).to.only.have.keys('description', 'user', 'status', 'name');
+          done();
+        });
     });
   });
 

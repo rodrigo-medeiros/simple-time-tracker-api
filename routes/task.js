@@ -1,7 +1,7 @@
-exports.findById = function (req, res, next) {
-  var id = req.params.id;
-  req.models.Task.findById(
-    id, 
+exports.findByName = function (req, res, next) {
+  var name = req.params.name;
+  req.models.Task.findByName(
+    name, 
     function (error, task) {
       if (error) return next(error);
       if (!task)

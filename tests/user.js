@@ -103,7 +103,7 @@ describe('User GET routes', function () {
 
             var task = tasks[0];
 
-            expect(task).to.have.keys('name', 'description', 'status');
+            expect(task).to.only.have.keys('name', 'description', 'status', 'user');
             done();
         });
       });

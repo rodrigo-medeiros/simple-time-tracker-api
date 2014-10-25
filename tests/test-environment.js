@@ -6,8 +6,8 @@ var Task = require('../models').Task,
 
 function createTaskWithWorkLog () {
   var task = new Task({
-    name: 'Make something',
-    description: "Make sure it's something useful",
+    name: 'Kill the Lannisters',
+    description: "Make sure Cersei is the first.",
     status: 'Open',
     worklogs: [ new ObjectId ],
     user: new ObjectId

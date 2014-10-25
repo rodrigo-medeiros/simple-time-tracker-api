@@ -54,7 +54,7 @@ describe('Task GET routes', function () {
           .get(URL)
           .end(function (res) {
             var task = res.body.task;
-            expect(task).to.have.keys('name', 'description', 'user', 'worklogs', 'status');
+            expect(task).to.have.keys('name', 'description', 'worklogs', 'status');
             done();
           });
       });

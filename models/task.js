@@ -30,7 +30,11 @@ var taskSchema = mongoose.Schema({
     }
   },
   worklogs: [{type: mongoose.Schema.Types.ObjectId, ref: 'WorkLog'}],
-  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    select: false
+  }
 });
 
 taskSchema.static({
@@ -42,8 +46,7 @@ taskSchema.static({
     {
       sort: { _id: -1 }
     })
-      .populate('worklogs')
-      .populate('user', '-password')
+      .populate('-user', '-worklogs')
       .exec(callback);
   }
 });

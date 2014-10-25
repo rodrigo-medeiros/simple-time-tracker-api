@@ -14,7 +14,7 @@ var URL = {
   port: 3000,
 };
 
-describe('Tasks GET routes', function () {
+describe('Task GET routes', function () {
   before(function () {
     boot();
     environment.cleanDb();

@@ -77,6 +77,23 @@ describe('Task GET routes', function () {
       });
     });
 
+    it('should return one worklog', function (done) {
+      URL.pathname = 'api/task/Kill the Lannisters/worklogs';
+      superagent
+        .get(URL)
+        .end(function (res) {
+          var worklogs = res.body.worklogs;
+
+          expect(worklogs).to.have.length(1);
+
+          var worklog = worklogs[0];
+
+          expect(worklog).to.be.ok();
+          expect(worklog).to.only.have.keys('startedAt', 'timeSpent');
+          done();
+      });
+    });
+
   });
 
   after(function () {

@@ -1,9 +1,6 @@
 var mongoose = require('mongoose');
 
 var workLogSchema = mongoose.Schema({
-  name: {
-    type: String
-  },
   startedAt: {
     type: Date,
     required: true,

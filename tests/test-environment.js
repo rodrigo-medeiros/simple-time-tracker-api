@@ -1,10 +1,10 @@
 var Task = require('../models').Task,
-    WorkLog = require('../models').WorkLog,
+    Worklog = require('../models').Worklog,
     User = require('../models').User,
     ObjectId = require('mongoose').Types.ObjectId,
     moment = require('moment');
 
-function createTaskWithWorkLog () {
+function createTaskWithWorklog () {
   var task = new Task({
     name: 'Kill the Lannisters',
     description: "Make sure Cersei is the first.",
@@ -15,13 +15,13 @@ function createTaskWithWorkLog () {
 
   task.save(function (error) {
     if (error) return error;
-    createWorkLog(task);
+    createWorklog(task);
     createUser(false, task);
   });
 }
 
-function createWorkLog (task) {
-  var log = new WorkLog({
+function createWorklog (task) {
+  var log = new Worklog({
     _id: task.worklogs[0],
     startedAt: moment('2014-01-01 09:05').toDate(),
     timeSpent: 3600,
@@ -51,10 +51,10 @@ function createUser (isAdmin, task) {
 
 exports.cleanDb = function () {
   Task.remove({}).exec();
-  WorkLog.remove({}).exec();
+  Worklog.remove({}).exec();
   User.remove({}).exec();
 }
 
-exports.createTaskWithWorkLog = createTaskWithWorkLog;
-exports.createWorkLog = createWorkLog;
+exports.createTaskWithWorklog = createTaskWithWorklog;
+exports.createWorklog = createWorklog;
 exports.createUser = createUser;

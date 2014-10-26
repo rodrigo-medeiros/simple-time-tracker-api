@@ -19,4 +19,15 @@ var workLogSchema = mongoose.Schema({
   task: {type: mongoose.Schema.Types.ObjectId, ref: 'Task'}
 });
 
+workLogSchema.static({
+  findByTaskId: function (taskId, callback) {
+    this.find({
+      task: taskId
+    })
+      .select('-task -_id -__v')
+      .sort({ _id: -1 })
+      .exec(callback);
+  }
+});
+
 module.exports = mongoose.model('WorkLog', workLogSchema);

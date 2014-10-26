@@ -44,8 +44,9 @@ taskSchema.static({
     this.findOne({
       name: name
     })
-      .populate('user', 'username -_id')
-      .select('-worklogs -_id -__v')
+      .populate('user', 'username')
+      .populate('worklogs', '_id')
+      .select('-__v')
       .sort({ _id: -1 })
       .exec(callback);
   },
@@ -54,8 +55,9 @@ taskSchema.static({
     this.find({
       user: userId
     })
-      .populate('user', 'username -_id')
-      .select('-worklogs -_id -__v')
+      .populate('user', 'username')
+      .populate('worklogs', '_id')
+      .select('-__v')
       .sort({ _id: -1 })
       .exec(callback);
   }

@@ -18,7 +18,7 @@ describe('User GET routes', function () {
   before(function () {
     boot();
     environment.cleanDb();
-    environment.createTaskWithWorkLog();
+    environment.createTaskWithWorklog();
   });
 
   describe('api/user/:id', function () {
@@ -103,7 +103,7 @@ describe('User GET routes', function () {
 
             var task = tasks[0];
 
-            expect(task).to.only.have.keys('name', 'description', 'status', 'user');
+            expect(task).to.only.have.keys('name', 'description', 'status', 'user', '_id', 'worklogs');
             done();
         });
       });

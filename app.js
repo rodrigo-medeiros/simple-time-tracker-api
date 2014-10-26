@@ -12,7 +12,7 @@ var express = require('express'),
 var app = express();
 
 app.use(function (req, res, next) {
-  if (!models.User || !models.Task || !models.WorkLog) return next(new Error('There are no models.'));
+  if (!models.User || !models.Task || !models.Worklog) return next(new Error('There are no models.'));
   req.models = models;
   return next();
 });
@@ -25,6 +25,7 @@ app.set('port', process.env.PORT || 3000);
 var router = express.Router();
 
 router.get('/task/:name', routes.task.findByName);
+router.get('/task/:name/worklogs', routes.task.getWorklogs);
 router.get('/user/:id', routes.user.findById);
 router.get('/user/:id/tasks', routes.user.getTasks);
 app.use('/api', router);
@@ -35,7 +36,7 @@ if ('development' === app.get('env')) {
 }
 
 app.all('*', function (req, res) {
-  res.send(404).end();
+  res.status(404).end();
 });
 
 var server = http.createServer(app);

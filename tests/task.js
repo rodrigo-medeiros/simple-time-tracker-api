@@ -18,7 +18,7 @@ describe('Task GET routes', function () {
   before(function () {
     boot();
     environment.cleanDb();
-    environment.createTaskWithWorkLog();
+    environment.createTaskWithWorklog();
   });
   describe('/api/task/:name', function () {
 
@@ -49,10 +49,34 @@ describe('Task GET routes', function () {
         .get(URL)
         .end(function (res) {
           var task = res.body.task;
-          expect(task).to.only.have.keys('description', 'user', 'status', 'name');
+          expect(task).to.only.have.keys('description', 'user', 'status', 'name', '_id', 'worklogs');
           done();
         });
     });
+  });
+
+  describe('/api/task/:name/worklogs', function () {
+
+    it('should respond 404', function (done) {
+      URL.pathname = 'api/task/not a valid name/worklogs';
+      superagent
+        .get(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(404);
+          done();
+      });
+    });
+
+    it('should respond 200', function (done) {
+      URL.pathname = 'api/task/Kill the Lannisters/worklogs';
+      superagent
+        .get(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(200);
+          done();
+      });
+    });
+
   });
 
   after(function () {

@@ -53,6 +53,18 @@ describe('Task GET routes', function () {
           done();
         });
     });
+
+    it('should return a user', function (done) {
+      URL.pathname = 'api/task/' + 'Kill the Lannisters';
+      superagent
+        .get(URL)
+        .end(function (res) {
+          var task = new models.Task(res.body.task);
+          task.getUser(function () {
+          });
+          done();
+      });
+    });
   });
 
   describe('/api/task/:name/worklogs', function () {

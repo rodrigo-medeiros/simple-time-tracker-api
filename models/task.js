@@ -63,4 +63,10 @@ taskSchema.static({
   }
 });
 
+taskSchema.method({
+  getUser: function (callback) {
+    callback();
+  }
+})
+
 module.exports = mongoose.model('Task', taskSchema);

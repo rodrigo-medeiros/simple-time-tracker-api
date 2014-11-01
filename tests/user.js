@@ -89,7 +89,7 @@ describe('User GET routes', function () {
       });
     });
 
-    it('should return a task', function (done) {
+    it('should return one task', function (done) {
       models.User.findOne({ username: 'aryastark' }, function (error, user) {
         URL.pathname = 'api/user/' + user._id + '/tasks';
 

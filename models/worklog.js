@@ -21,7 +21,7 @@ workLogSchema.static({
     this.find({
       task: taskId
     })
-      .select('-task -_id -__v')
+      .select('-task -__v')
       .sort({ _id: -1 })
       .exec(callback);
   }

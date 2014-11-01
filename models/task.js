@@ -65,6 +65,7 @@ taskSchema.static({
 
 taskSchema.method({
   getUser: function (callback) {
+    console.log(this);
     callback();
   }
 })

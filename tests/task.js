@@ -54,14 +54,15 @@ describe('Task GET routes', function () {
         });
     });
 
-    it('should return a user', function (done) {
+    it('should have a user attribute', function (done) {
       URL.pathname = 'api/task/' + 'Kill the Lannisters';
       superagent
         .get(URL)
         .end(function (res) {
-          var task = new models.Task(res.body.task);
-          task.getUser(function () {
-          });
+          var user = res.body.task.user;
+
+          expect(user).to.be.ok();
+          expect(user).to.only.have.keys('_id', 'username');
           done();
       });
     });

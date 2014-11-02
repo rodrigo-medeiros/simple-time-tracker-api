@@ -39,6 +39,14 @@ var taskSchema = mongoose.Schema({
   }
 });
 
+taskSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+  }
+});
+
 taskSchema.static({
   findByName: function (name, callback) {
     this.findOne({

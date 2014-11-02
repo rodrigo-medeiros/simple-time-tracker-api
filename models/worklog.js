@@ -16,13 +16,20 @@ var workLogSchema = mongoose.Schema({
   task: {type: mongoose.Schema.Types.ObjectId, ref: 'Task'}
 });
 
+workLogSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+  }
+});
+
 workLogSchema.static({
   findByTaskId: function (taskId, callback) {
     this.find({
       task: taskId
     })
-      .select('-task -__v')
-      .sort({ _id: -1 })
+      .select('-task')
       .exec(callback);
   }
 });

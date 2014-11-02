@@ -49,7 +49,7 @@ describe('Task GET routes', function () {
         .get(URL)
         .end(function (res) {
           var task = res.body.task;
-          expect(task).to.only.have.keys('_id', 'description', 'user', 'status', 'name', 'worklogs');
+          expect(task).to.only.have.keys('id', 'description', 'user', 'status', 'name', 'worklogs');
           done();
         });
     });
@@ -62,7 +62,7 @@ describe('Task GET routes', function () {
           var user = res.body.task.user;
 
           expect(user).to.be.ok();
-          expect(user).to.only.have.keys('_id', 'username');
+          expect(user).to.only.have.keys('id', 'username');
           done();
       });
     });
@@ -102,7 +102,7 @@ describe('Task GET routes', function () {
           var worklog = worklogs[0];
 
           expect(worklog).to.be.ok();
-          expect(worklog).to.only.have.keys('_id', 'startedAt', 'timeSpent');
+          expect(worklog).to.only.have.keys('id', 'startedAt', 'timeSpent');
           done();
       });
     });

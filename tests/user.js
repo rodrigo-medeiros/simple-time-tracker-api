@@ -21,7 +21,7 @@ describe('User GET routes', function () {
     environment.createTaskWithWorklog();
   });
 
-  describe('api/user/:id', function () {
+  describe('/api/user/:id', function () {
 
     it('should respond 404', function (done) {
       URL.pathname = 'api/user/5210a64f846cb004b5000001';
@@ -63,7 +63,7 @@ describe('User GET routes', function () {
     });
   });
 
-  describe('api/user/:id/tasks', function () {
+  describe('/api/user/:id/tasks', function () {
 
     it('should respond 404', function (done) {
       URL.pathname = 'api/user/5210a64f846cb004b5000001/tasks';

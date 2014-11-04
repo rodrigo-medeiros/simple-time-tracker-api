@@ -28,6 +28,7 @@ router.get('/task/:name', routes.task.findByName);
 router.get('/task/:name/worklogs', routes.task.getWorklogs);
 router.get('/user/:id', routes.user.findById);
 router.get('/user/:id/tasks', routes.user.getTasks);
+router.get('/worklog/:id', routes.worklog.findById);
 app.use('/api', router);
 
 if ('development' === app.get('env')) {

@@ -20,7 +20,7 @@ describe('Worklog GET routes', function () {
     environment.cleanDb();
     environment.createTaskWithWorklog();
   });
-  describe('/worklog/:id', function () {
+  describe('/api/worklog/:id', function () {
 
     it('should respond 404', function (done) {
       URL.pathname = 'api/worklog/' + '5210a64f846cb004b5000001';
@@ -30,7 +30,36 @@ describe('Worklog GET routes', function () {
         .end(function (res) {
           expect(res.status).to.equal(404);
           done();
+      });
+    });
+
+    it('should respond 200', function (done) {
+      models.Worklog.findOne({ timeSpent: 3600 }, function (error, worklog) {
+        URL.pathname = 'api/worklog/' + worklog._id;
+
+        superagent
+          .get(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(200);
+            done();
         });
+      });
+    });
+
+    it('should return a worklog', function (done) {
+      models.Worklog.findOne({ timeSpent: 3600 }, function (error, worklog) {
+        URL.pathname = 'api/worklog/' + worklog._id;
+
+        superagent
+          .get(URL)
+          .end(function (res) {
+            var worklog = res.body.worklog;
+
+            expect(worklog).to.be.ok();
+            expect(worklog).to.only.have.keys('id', 'startedAt', 'timeSpent', 'task');
+            done();
+        });
+      });
     });
   });
 

@@ -14,15 +14,67 @@ var URL = {
   port: 3000,
 };
 
-describe('Task GET routes', function () {
+describe('Task routes', function () {
   before(function () {
     boot();
     environment.cleanDb();
     environment.createTaskWithWorklog();
   });
+
+  describe('/api/task', function () {
+     it('should respond 500 to POST', function (done) {
+      URL.pathname = 'api/task';
+
+      superagent
+        .post(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(500);
+          done();
+        });
+    });
+
+    it('should respond 200 to POST', function (done) {
+      URL.pathname = 'api/task';
+      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+        var task = {
+          name: 'Find John Snow',
+          description: '',
+          user: user.id
+        };
+        superagent
+          .post(URL)
+          .send({ task: task })
+          .end(function (res) {
+            expect(res.status).to.equal(200);
+            done();
+          });
+      });
+    });
+
+    it('should insert a user successfully.', function (done) {
+      URL.pathname = 'api/task';
+      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+        var task = {
+          name: 'Go to Bravos',
+          description: 'I need to learn how to became a killer.',
+          user: user.id
+        };
+        superagent
+          .post(URL)
+          .send({ task: task })
+          .end(function (res) {
+            var taskResponse = res.body.response;
+            expect(taskResponse.message).to.be.equal("Task successfully added.");
+            expect(taskResponse.data).to.have.keys('name', 'description', 'status', 'user');
+            done();
+          });
+      });
+    });
+  });
+
   describe('/api/task/:name', function () {
 
-    it('should respond 404', function (done) {
+    it('should respond 404 to GET', function (done) {
       URL.pathname = 'api/task/not a valid task'
 
       superagent
@@ -33,7 +85,7 @@ describe('Task GET routes', function () {
         });
     });
 
-    it('should respond 200', function (done) {
+    it('should respond 200 to GET', function (done) {
       URL.pathname = 'api/task/' + 'Kill the Lannisters';
       superagent
         .get(URL)
@@ -43,7 +95,8 @@ describe('Task GET routes', function () {
         });
     });
 
-    it('should return one task', function (done) {
+
+    it('should return one task when GET', function (done) {
       URL.pathname = 'api/task/' + 'Kill the Lannisters';
       superagent
         .get(URL)
@@ -54,7 +107,7 @@ describe('Task GET routes', function () {
         });
     });
 
-    it('should have a user attribute', function (done) {
+    it('should have a user attribute when GET', function (done) {
       URL.pathname = 'api/task/' + 'Kill the Lannisters';
       superagent
         .get(URL)
@@ -70,7 +123,7 @@ describe('Task GET routes', function () {
 
   describe('/api/task/:name/worklogs', function () {
 
-    it('should respond 404', function (done) {
+    it('should respond 404 when GET', function (done) {
       URL.pathname = 'api/task/not a valid name/worklogs';
       superagent
         .get(URL)
@@ -80,7 +133,7 @@ describe('Task GET routes', function () {
       });
     });
 
-    it('should respond 200', function (done) {
+    it('should respond 200 when GET', function (done) {
       URL.pathname = 'api/task/Kill the Lannisters/worklogs';
       superagent
         .get(URL)
@@ -90,7 +143,7 @@ describe('Task GET routes', function () {
       });
     });
 
-    it('should return one worklog', function (done) {
+    it('should return one worklog when GET', function (done) {
       URL.pathname = 'api/task/Kill the Lannisters/worklogs';
       superagent
         .get(URL)

@@ -18,12 +18,16 @@ app.use(function (req, res, next) {
 });
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('port', process.env.PORT || 3000);
 
 var router = express.Router();
 
+router.post('/task', routes.task.add);
 router.get('/task/:name', routes.task.findByName);
 router.get('/task/:name/worklogs', routes.task.getWorklogs);
 router.get('/user/:id', routes.user.findById);
@@ -31,18 +35,18 @@ router.get('/user/:id/tasks', routes.user.getTasks);
 router.get('/worklog/:id', routes.worklog.findById);
 app.use('/api', router);
 
-if ('development' === app.get('env')) {
-  // development only...
-  app.use(errorhandler());
-}
+  if ('development' === app.get('env')) {
+    // development only...
+    app.use(errorhandler());
+  }
 
-app.all('*', function (req, res) {
-  res.status(404).end();
-});
+  app.all('*', function (req, res) {
+    res.status(404).end();
+  });
 
-var server = http.createServer(app);
-var boot = function () {
-  server.listen(app.get('port'), function () {
+  var server = http.createServer(app);
+  var boot = function () {
+    server.listen(app.get('port'), function () {
     if ('development' !== app.get('env')) {
       console.info('Express server listening on port ' + app.get('port'));
     }

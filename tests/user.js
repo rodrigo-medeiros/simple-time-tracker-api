@@ -14,16 +14,16 @@ var URL = {
   port: 3000,
 };
 
-describe('User GET routes', function () {
+describe('User routes', function () {
   before(function () {
     boot();
     environment.cleanDb();
     environment.createTaskWithWorklog();
   });
 
-  describe('/api/user/:id', function () {
+  describe('/api/user/:id (GET)', function () {
 
-    it('should respond 404', function (done) {
+    it('should respond 404 to GET', function (done) {
       URL.pathname = 'api/user/5210a64f846cb004b5000001';
 
       superagent
@@ -34,7 +34,7 @@ describe('User GET routes', function () {
         });
     });
 
-    it('should respond 200', function (done) {
+    it('should respond 200 to GET', function (done) {
       models.User.findOne({ username: 'aryastark' }, function (error, user) {
         URL.pathname = 'api/user/' + user._id;
 
@@ -63,9 +63,9 @@ describe('User GET routes', function () {
     });
   });
 
-  describe('/api/user/:id/tasks', function () {
+  describe('/api/user/:id/tasks (GET)', function () {
 
-    it('should respond 404', function (done) {
+    it('should respond 404 to GET', function (done) {
       URL.pathname = 'api/user/5210a64f846cb004b5000001/tasks';
 
       superagent
@@ -76,7 +76,7 @@ describe('User GET routes', function () {
       });
     });
 
-    it('should respond 200', function (done) {
+    it('should respond 200 to GET', function (done) {
       models.User.findOne({ username: 'aryastark' }, function (error, user) {
         URL.pathname = 'api/user/' + user._id + '/tasks';
 

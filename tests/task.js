@@ -21,14 +21,14 @@ describe('Task routes', function () {
     environment.createTaskWithWorklog();
   });
 
-  describe('/api/task', function () {
-     it('should respond 500 to POST', function (done) {
+  describe('/api/task (POST)', function () {
+     it('should respond 400 to POST', function (done) {
       URL.pathname = 'api/task';
 
       superagent
         .post(URL)
         .end(function (res) {
-          expect(res.status).to.equal(500);
+          expect(res.status).to.equal(400);
           done();
         });
     });
@@ -72,7 +72,7 @@ describe('Task routes', function () {
     });
   });
 
-  describe('/api/task/:name', function () {
+  describe('/api/task/:name (GET)', function () {
 
     it('should respond 404 to GET', function (done) {
       URL.pathname = 'api/task/not a valid task'
@@ -121,7 +121,7 @@ describe('Task routes', function () {
     });
   });
 
-  describe('/api/task/:name/worklogs', function () {
+  describe('/api/task/:name/worklogs (GET)', function () {
 
     it('should respond 404 when GET', function (done) {
       URL.pathname = 'api/task/not a valid name/worklogs';

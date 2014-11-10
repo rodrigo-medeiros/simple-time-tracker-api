@@ -14,15 +14,15 @@ var URL = {
   port: 3000,
 };
 
-describe('Worklog GET routes', function () {
+describe('Worklog routes', function () {
   before(function () {
     boot();
     environment.cleanDb();
     environment.createTaskWithWorklog();
   });
-  describe('/api/worklog/:id', function () {
+  describe('/api/worklog/:id (GET)', function () {
 
-    it('should respond 404', function (done) {
+    it('should respond 404 to GET', function (done) {
       URL.pathname = 'api/worklog/' + '5210a64f846cb004b5000001';
 
       superagent
@@ -33,7 +33,7 @@ describe('Worklog GET routes', function () {
       });
     });
 
-    it('should respond 200', function (done) {
+    it('should respond 200 to GET', function (done) {
       models.Worklog.findOne({ timeSpent: 3600 }, function (error, worklog) {
         URL.pathname = 'api/worklog/' + worklog._id;
 

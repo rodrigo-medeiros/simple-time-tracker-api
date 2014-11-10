@@ -44,7 +44,7 @@ exports.getWorklogs = function (req, res, next) {
 
 exports.add = function (req, res, next) {
   var task = req.body.task;
-  if (!task) return res.status(500).json({ error: "No task payload" });
+  if (!task) return res.status(400).json({ error: "No task payload" });
   req.models.Task.create(task, function (error, taskResponse) {
     if (error) return next(error);
     res.json({ response: {

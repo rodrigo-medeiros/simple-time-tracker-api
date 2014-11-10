@@ -52,4 +52,14 @@ userSchema.set('toJSON', {
   }
 });
 
+userSchema.static({
+  findByUsername: function (username, callback) {
+    this.findOne({
+      username: username
+    })
+      .select('-__v')
+      .exec(callback);
+  }
+});
+
 module.exports = mongoose.model('User', userSchema);

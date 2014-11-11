@@ -30,6 +30,18 @@ exports.getTasks = function (req, res, next) {
   });
 }
 
+exports.add = function (req, res, next) {
+  var user = req.body.user;
+  if (!user) return res.status(400).json({ error: "No user payload" });
+  req.models.User.create(user, function (error, userResponse) {
+    if (error) return next(error);
+    res.json({ response: {
+      message: "User successfully added.",
+      data: userResponse
+    }});
+  });
+}
+
 exports.authenticate = function (req, res, next) {
   // TODO
 }

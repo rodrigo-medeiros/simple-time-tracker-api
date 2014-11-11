@@ -30,6 +30,7 @@ var router = express.Router();
 router.post('/task', routes.task.add);
 router.get('/task/:name', routes.task.findByName);
 router.get('/task/:name/worklogs', routes.task.getWorklogs);
+router.post('/user', routes.user.add);
 router.get('/user/:id', routes.user.findById);
 router.get('/user/:id/tasks', routes.user.getTasks);
 router.get('/worklog/:id', routes.worklog.findById);

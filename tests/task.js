@@ -51,7 +51,7 @@ describe('Task routes', function () {
       });
     });
 
-    it('should insert a user successfully.', function (done) {
+    it('should insert a task successfully', function (done) {
       URL.pathname = 'api/task';
       models.User.findOne({ username: 'aryastark' }, function (error, user) {
         var task = {

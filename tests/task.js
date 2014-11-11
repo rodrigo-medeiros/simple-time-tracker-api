@@ -35,7 +35,7 @@ describe('Task routes', function () {
 
     it('should respond 200 to POST', function (done) {
       URL.pathname = 'api/task';
-      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+      models.User.findByUsername('aryastark', function (error, user) {
         var task = {
           name: 'Find John Snow',
           description: '',
@@ -53,7 +53,7 @@ describe('Task routes', function () {
 
     it('should insert a task successfully', function (done) {
       URL.pathname = 'api/task';
-      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+      models.User.findByUsername('aryastark', function (error, user) {
         var task = {
           name: 'Go to Bravos',
           description: 'I need to learn how to became a killer.',

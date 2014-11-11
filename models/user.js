@@ -57,7 +57,7 @@ userSchema.static({
     this.findOne({
       username: username
     })
-      .select('-__v')
+      .select('-__v -password')
       .exec(callback);
   }
 });

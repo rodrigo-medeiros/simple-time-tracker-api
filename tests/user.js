@@ -76,7 +76,7 @@ describe('User routes', function () {
     });
   });
 
-  describe('/api/user/:id (get)', function () {
+  describe('/api/user/:id (GET)', function () {
 
     it('should respond 404 to GET', function (done) {
       URL.pathname = 'api/user/5210a64f846cb004b5000001';

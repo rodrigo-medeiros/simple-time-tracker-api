@@ -65,7 +65,7 @@ describe('Task routes', function () {
           .end(function (res) {
             var taskResponse = res.body.response;
             expect(taskResponse.message).to.be.equal("Task successfully added.");
-            expect(taskResponse.data).to.have.keys('name', 'description', 'status', 'user');
+            expect(taskResponse.data).to.only.have.keys('id', 'name', 'description', 'status', 'user', 'worklogs');
             done();
           });
       });

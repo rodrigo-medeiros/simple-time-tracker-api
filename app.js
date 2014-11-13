@@ -33,6 +33,7 @@ router.get('/task/:name/worklogs', routes.task.getWorklogs);
 router.post('/user', routes.user.add);
 router.get('/user/:id', routes.user.findById);
 router.get('/user/:id/tasks', routes.user.getTasks);
+router.post('/worklog', routes.worklog.add);
 router.get('/worklog/:id', routes.worklog.findById);
 app.use('/api', router);
 

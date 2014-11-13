@@ -13,7 +13,8 @@ var workLogSchema = mongoose.Schema({
       return value > 0;
     }, 'Time spent must be greater than zero.' ]
   },
-  task: {type: mongoose.Schema.Types.ObjectId, ref: 'Task'}
+  task: {type: mongoose.Schema.Types.ObjectId, ref: 'Task'},
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 workLogSchema.set('toJSON', {

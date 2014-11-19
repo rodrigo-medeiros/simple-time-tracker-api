@@ -35,6 +35,7 @@ router.get('/user/:id', routes.user.findById);
 router.get('/user/:id/tasks', routes.user.getTasks);
 router.post('/worklog', routes.worklog.add);
 router.get('/worklog/:id', routes.worklog.findById);
+router.delete('/worklog/:id', routes.worklog.del);
 app.use('/api', router);
 
   if ('development' === app.get('env')) {

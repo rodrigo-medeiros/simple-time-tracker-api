@@ -47,10 +47,12 @@ exports.add = function (req, res, next) {
   if (!task) return res.status(400).json({ error: "No task payload" });
   req.models.Task.create(task, function (error, taskResponse) {
     if (error) return next(error);
-    res.json({ response: {
-      message: "Task successfully added.",
-      data: taskResponse
-    }});
+    res.json({
+      response: {
+        message: "Task successfully added.",
+        data: taskResponse
+      }
+    });
   });
 }
 

@@ -120,6 +120,34 @@ describe('Worklog routes', function () {
     });
   });
 
+  describe('/api/worklog/:id (DEL)', function () {
+
+    it('should respond 400 to DEL', function (done) {
+      URL.pathname = 'api/worklog/' + '5210a64f846cb004b5000001';
+      superagent
+        .del(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(404);
+          done();
+        });
+    });
+
+    it('should delete a worklog successfully', function (done) {
+      models.Worklog.findOne({ timeSpent: 3600 }, function (error, worklog) {
+        if (error) return next(error);
+
+        URL.pathname = 'api/worklog/' + worklog._id;
+
+        superagent
+          .del(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(204);
+            done();
+          });
+      });
+    });
+  });
+
   after(function () {
     shutdown();
     environment.cleanDb();

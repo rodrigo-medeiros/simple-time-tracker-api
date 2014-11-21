@@ -122,7 +122,7 @@ describe('Worklog routes', function () {
 
   describe('/api/worklog/:id (DEL)', function () {
 
-    it('should respond 400 to DEL', function (done) {
+    it('should respond 404 to DEL', function (done) {
       URL.pathname = 'api/worklog/' + '5210a64f846cb004b5000001';
       superagent
         .del(URL)

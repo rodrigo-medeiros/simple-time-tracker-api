@@ -37,6 +37,25 @@ exports.add = function (req, res, next) {
   });
 }
 
+exports.del = function (req, res, next) {
+  var user = req.user;
+  req.models.Worklog.findByUserId(
+    user.id,
+    function (error, worklogs) {
+      if (error) return next(error);
+      worklogs.forEach(function (worklog) {
+        worklog.remove(function (error, doc) {
+          if (error) return next(error);
+        });
+      });
+
+      user.remove(function (error, doc) {
+        if (error) return next(error);
+        res.status(204).end();
+      });
+  });
+}
+
 exports.authenticate = function (req, res, next) {
   // TODO
 }

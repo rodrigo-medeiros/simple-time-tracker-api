@@ -32,6 +32,14 @@ workLogSchema.static({
     })
       .select('-task')
       .exec(callback);
+  },
+
+  findByUserId: function (userId, callback) {
+    this.find({
+      user: userId
+    })
+      .select('-user')
+      .exec(callback);
   }
 });
 

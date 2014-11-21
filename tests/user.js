@@ -165,6 +165,34 @@ describe('User routes', function () {
     });
   });
 
+  describe('/api/user/:id (DEL)', function () {
+
+    it('should respond 404 to del', function (done) {
+      URL.pathname = 'api/user/' + '5210a64f846cb004b5000001';
+
+      superagent
+        .del(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(404);
+          done();
+        });
+    });
+
+    it('should delete a user successfully', function (done) {
+      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+        if (error) return next(error);
+        URL.pathname = 'api/user/' + user.id;
+
+        superagent
+          .del(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(204);
+            done();
+          });
+      });
+    });
+  });
+
   after(function () {
     shutdown();
     environment.cleanDb();

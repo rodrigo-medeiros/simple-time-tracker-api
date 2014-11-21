@@ -35,6 +35,7 @@ router.param('user_id', routes.user.findByUserId);
 router.post('/user', routes.user.add);
 router.get('/user/:user_id', routes.user.getUser);
 router.get('/user/:user_id/tasks', routes.user.getTasks);
+router.delete('/user/:user_id', routes.user.del);
 
 router.post('/worklog', routes.worklog.add);
 router.get('/worklog/:id', routes.worklog.findById);

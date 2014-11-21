@@ -1,32 +1,27 @@
-exports.findById = function (req, res, next) {
-  var id = req.params.id;
+exports.findByUserId = function (req, res, next, user_id) {
   req.models.User.findById(
-    id,
+    user_id,
     function (error, user) {
       if (error) return next(error);
-      if (!user)
-        return res.status(404).end();
-      res.json({ user: user });
+      if (!user) return res.status(404).end();
+      req.user = user;
+      next();
   });
 }
 
-exports.getTasks = function (req, res, next) {
-  var id = req.params.id;
-  req.models.User.findById(
-    id,
-    function (error, user) {
-      if (error) return next(error);
-      if (!user)
-        return res.status(404).end();
+exports.getUser = function (req, res, next) {
+  res.json({ user: req.user });
+}
 
-      req.models.Task.findByUserId(
-        user._id,
-        function (error, tasks) {
-          if (error) return next(error);
-          if (!tasks || !tasks.length)
-            return res.status(404).end();
-          res.json({ tasks: tasks });
-      });
+exports.getTasks = function (req, res, next) {
+  var user = req.user;
+  req.models.Task.findByUserId(
+    user.id,
+    function (error, tasks) {
+      if (error) return next(error);
+      if (!tasks || !tasks.length)
+        return res.status(404).end();
+      res.json({ tasks: tasks });
   });
 }
 

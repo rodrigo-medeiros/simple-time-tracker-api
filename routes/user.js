@@ -10,7 +10,8 @@ exports.findByUserId = function (req, res, next, user_id) {
 }
 
 exports.getUser = function (req, res, next) {
-  res.json({ user: req.user });
+  var user = req.user;
+  res.json({ user: user });
 }
 
 exports.getTasks = function (req, res, next) {
@@ -22,6 +23,18 @@ exports.getTasks = function (req, res, next) {
       if (!tasks || !tasks.length)
         return res.status(404).end();
       res.json({ tasks: tasks });
+  });
+}
+
+exports.getWorklogs = function (req, res, next) {
+  var user = req.user;
+  req.models.Worklog.findByUserId(
+    user._id,
+    function (error, worklogs) {
+      if (error) return next(error);
+      if (!worklogs || !worklogs.length)
+        return res.status(404).end();
+      res.json({ worklogs: worklogs });
   });
 }
 

@@ -13,24 +13,30 @@ var workLogSchema = mongoose.Schema({
       return value > 0;
     }, 'Time spent must be greater than zero.' ]
   },
-  task: {type: mongoose.Schema.Types.ObjectId, ref: 'Task'},
-  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
-});
-
-workLogSchema.set('toJSON', {
-  transform: function (doc, ret, options) {
-    ret.id = ret._id;
-    delete ret._id;
-    delete ret.__v;
+  task: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Task'
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 });
 
 workLogSchema.static({
+  findById: function (id, callback) {
+    this.findOne({
+      _id: id
+    })
+      .select('-task -user -__v')
+      .exec(callback);
+  },
+
   findByTaskId: function (taskId, callback) {
     this.find({
       task: taskId
     })
-      .select('-task')
+      .select('-task -user -__v')
       .exec(callback);
   },
 
@@ -38,7 +44,7 @@ workLogSchema.static({
     this.find({
       user: userId
     })
-      .select('-user')
+      .select('-task -user -__v')
       .exec(callback);
   }
 });

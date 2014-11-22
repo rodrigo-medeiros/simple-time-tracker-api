@@ -15,8 +15,8 @@ function createTaskWithWorklog () {
 
   task.save(function (error) {
     if (error) return error;
-    createWorklog(task);
     createUser(false, task);
+    createWorklog(task);
   });
 }
 
@@ -25,7 +25,8 @@ function createWorklog (task) {
     _id: task.worklogs[0],
     startedAt: moment('2014-01-01 09:05').toDate(),
     timeSpent: 3600,
-    task: task._id
+    task: task._id,
+    user: task.user
   });
 
   log.save(function (error) {

@@ -65,7 +65,7 @@ describe('Task routes', function () {
           .end(function (res) {
             var taskResponse = res.body.response;
             expect(taskResponse.message).to.be.equal("Task successfully added.");
-            expect(taskResponse.data).to.only.have.keys('id', 'name', 'description', 'status', 'user', 'worklogs');
+            expect(taskResponse.data).to.only.have.keys('_id', '__v', 'name', 'description', 'status', 'user', 'worklogs');
             done();
           });
       });
@@ -102,7 +102,7 @@ describe('Task routes', function () {
         .get(URL)
         .end(function (res) {
           var task = res.body.task;
-          expect(task).to.only.have.keys('id', 'description', 'user', 'status', 'name', 'worklogs');
+          expect(task).to.only.have.keys('_id', 'description', 'user', 'status', 'name', 'worklogs');
           done();
         });
     });
@@ -115,7 +115,7 @@ describe('Task routes', function () {
           var user = res.body.task.user;
 
           expect(user).to.be.ok();
-          expect(user).to.only.have.keys('id', 'username');
+          expect(user).to.only.have.keys('_id', 'username');
           done();
       });
     });
@@ -155,7 +155,7 @@ describe('Task routes', function () {
           var worklog = worklogs[0];
 
           expect(worklog).to.be.ok();
-          expect(worklog).to.only.have.keys('id', 'startedAt', 'timeSpent');
+          expect(worklog).to.only.have.keys('_id', 'startedAt', 'timeSpent');
           done();
       });
     });

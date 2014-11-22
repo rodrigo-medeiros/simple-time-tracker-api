@@ -44,18 +44,18 @@ var userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.set('toJSON', {
-  transform: function (doc, ret, options) {
-    ret.id = ret._id;
-    delete ret._id;
-    delete ret.__v;
-  }
-});
-
 userSchema.static({
   findByUsername: function (username, callback) {
     this.findOne({
       username: username
+    })
+      .select('-__v -password')
+      .exec(callback);
+  },
+
+  findById: function (id, callback) {
+    this.findOne({
+      _id: id
     })
       .select('-__v -password')
       .exec(callback);

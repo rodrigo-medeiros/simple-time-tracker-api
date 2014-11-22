@@ -17,10 +17,11 @@ exports.add = function (req, res, next) {
     worklog,
     function (error, worklogResponse) {
       if (error) return next(error);
+      var worklog = new req.models.Worklog(worklogResponse);
       res.json({
         response: {
           message: "Worklog successfully added.",
-          data: worklogResponse
+          data: worklog
         }
       });
   });

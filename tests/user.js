@@ -76,7 +76,7 @@ describe('User routes', function () {
     });
   });
 
-  describe('/api/user/:id (GET)', function () {
+  describe('/api/user/:user_id (GET)', function () {
 
     it('should respond 404 to GET', function (done) {
       URL.pathname = 'api/user/5210a64f846cb004b5000001';
@@ -111,14 +111,14 @@ describe('User routes', function () {
          .end(function (res) {
            var user = res.body.user;
            expect(user).to.be.ok();
-           expect(user).to.only.have.keys('id', 'firstName', 'lastName', 'username', 'email', 'admin');
+           expect(user).to.only.have.keys('_id', 'firstName', 'lastName', 'username', 'email', 'admin');
            done();
          });
       });
     });
   });
 
-  describe('/api/user/:id/tasks (GET)', function () {
+  describe('/api/user/:user_id/tasks (GET)', function () {
 
     it('should respond 404 to GET', function (done) {
       URL.pathname = 'api/user/5210a64f846cb004b5000001/tasks';
@@ -158,14 +158,61 @@ describe('User routes', function () {
 
             var task = tasks[0];
 
-            expect(task).to.only.have.keys('name', 'description', 'status', 'user', 'id', 'worklogs');
+            expect(task).to.only.have.keys('_id', 'name', 'description', 'status', 'user', 'worklogs');
             done();
         });
       });
     });
   });
 
-  describe('/api/user/:id (DEL)', function () {
+  describe('/api/user/:user_id/worklogs (GET)', function () {
+
+    it('should respond 404 to GET', function (done) {
+      URL.pathname = 'api/user/' + '5210a64f846cb004b5000001/worklogs';
+
+      superagent
+        .get(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(404);
+          done();
+        });
+    });
+
+    it('should respond 200 to GET', function (done) {
+      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+      URL.pathname = 'api/user/' + user._id + '/worklogs';
+
+      superagent
+        .get(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    it('should return one worklog', function (done) {
+      models.User.findOne({ username: 'aryastark' }, function (error, user) {
+        URL.pathname = 'api/user/' + user._id + '/worklogs';
+
+        superagent
+          .get(URL)
+          .end(function (res) {
+            var worklogs = res.body.worklogs;
+
+            expect(worklogs).to.not.be.empty();
+            expect(worklogs).to.have.length(1);
+
+            var worklog = worklogs[0];
+
+            expect(worklog).to.only.have.keys('_id', 'startedAt', 'timeSpent');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('/api/user/:user_id (DEL)', function () {
 
     it('should respond 404 to del', function (done) {
       URL.pathname = 'api/user/' + '5210a64f846cb004b5000001';

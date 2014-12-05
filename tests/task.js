@@ -115,7 +115,7 @@ describe('Task routes', function () {
           var user = res.body.task.user;
 
           expect(user).to.be.ok();
-          expect(user).to.only.have.keys('_id', 'username');
+          expect(user).to.only.have.keys('id', 'username');
           done();
       });
     });

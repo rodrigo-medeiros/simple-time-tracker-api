@@ -111,7 +111,7 @@ describe('User routes', function () {
          .end(function (res) {
            var user = res.body.user;
            expect(user).to.be.ok();
-           expect(user).to.only.have.keys('_id', 'firstName', 'lastName', 'username', 'email', 'admin');
+           expect(user).to.only.have.keys('id', 'firstName', 'lastName', 'username', 'email', 'admin');
            done();
          });
       });

@@ -121,10 +121,10 @@ describe('Task routes', function () {
     });
   });
 
-  describe('/api/task/:name/worklogs (GET)', function () {
+  describe('/api/task/:name/worklog (GET)', function () {
 
     it('should respond 404 when GET', function (done) {
-      URL.pathname = 'api/task/not a valid name/worklogs';
+      URL.pathname = 'api/task/not a valid name/worklog';
       superagent
         .get(URL)
         .end(function (res) {
@@ -134,7 +134,7 @@ describe('Task routes', function () {
     });
 
     it('should respond 200 when GET', function (done) {
-      URL.pathname = 'api/task/Kill the Lannisters/worklogs';
+      URL.pathname = 'api/task/Kill the Lannisters/worklog';
       superagent
         .get(URL)
         .end(function (res) {
@@ -144,7 +144,7 @@ describe('Task routes', function () {
     });
 
     it('should return one worklog when GET', function (done) {
-      URL.pathname = 'api/task/Kill the Lannisters/worklogs';
+      URL.pathname = 'api/task/Kill the Lannisters/worklog';
       superagent
         .get(URL)
         .end(function (res) {

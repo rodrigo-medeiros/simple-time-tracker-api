@@ -165,10 +165,10 @@ describe('User routes', function () {
     });
   });
 
-  describe('/api/user/:user_id/worklogs (GET)', function () {
+  describe('/api/user/:user_id/worklog (GET)', function () {
 
     it('should respond 404 to GET', function (done) {
-      URL.pathname = 'api/user/' + '5210a64f846cb004b5000001/worklogs';
+      URL.pathname = 'api/user/' + '5210a64f846cb004b5000001/worklog';
 
       superagent
         .get(URL)
@@ -180,7 +180,7 @@ describe('User routes', function () {
 
     it('should respond 200 to GET', function (done) {
       models.User.findOne({ username: 'aryastark' }, function (error, user) {
-      URL.pathname = 'api/user/' + user._id + '/worklogs';
+      URL.pathname = 'api/user/' + user._id + '/worklog';
 
       superagent
         .get(URL)
@@ -193,7 +193,7 @@ describe('User routes', function () {
 
     it('should return one worklog', function (done) {
       models.User.findOne({ username: 'aryastark' }, function (error, user) {
-        URL.pathname = 'api/user/' + user._id + '/worklogs';
+        URL.pathname = 'api/user/' + user._id + '/worklog';
 
         superagent
           .get(URL)

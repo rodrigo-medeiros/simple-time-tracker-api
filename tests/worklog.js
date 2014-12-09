@@ -70,7 +70,7 @@ describe('Worklog routes', function () {
         .end(function (res) {
           var worklogResponse = res.body.response;
           expect(worklogResponse.message).to.equal("Worklog successfully added.");
-          expect(worklogResponse.data).to.only.have.keys('_id','__v', 'startedAt', 'timeSpent', 'task', 'user');
+          expect(worklogResponse.data).to.only.have.keys('id', 'startedAt', 'timeSpent', 'task', 'user');
           done();
         });
       });
@@ -113,7 +113,7 @@ describe('Worklog routes', function () {
             var worklog = res.body.worklog;
 
             expect(worklog).to.be.ok();
-            expect(worklog).to.only.have.keys('_id', 'startedAt', 'timeSpent');
+            expect(worklog).to.only.have.keys('id', 'startedAt', 'timeSpent');
             done();
         });
       });

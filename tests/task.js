@@ -155,7 +155,7 @@ describe('Task routes', function () {
           var worklog = worklogs[0];
 
           expect(worklog).to.be.ok();
-          expect(worklog).to.only.have.keys('_id', 'startedAt', 'timeSpent');
+          expect(worklog).to.only.have.keys('id', 'startedAt', 'timeSpent');
           done();
       });
     });

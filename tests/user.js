@@ -158,7 +158,7 @@ describe('User routes', function () {
 
             var task = tasks[0];
 
-            expect(task).to.only.have.keys('_id', 'name', 'description', 'status', 'user', 'worklogs');
+            expect(task).to.only.have.keys('id', 'name', 'description', 'status', 'user', 'worklogs');
             done();
         });
       });

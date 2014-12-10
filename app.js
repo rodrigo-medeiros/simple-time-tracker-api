@@ -44,18 +44,18 @@ router.delete('/worklog/:id', routes.worklog.del);
 
 app.use('/api', router);
 
-  if ('development' === app.get('env')) {
-    // development only...
-    app.use(errorhandler());
-  }
+if ('development' === app.get('env')) {
+  // development only...
+  app.use(errorhandler());
+}
 
-  app.all('*', function (req, res) {
-    res.status(404).end();
-  });
+app.all('*', function (req, res) {
+  res.status(404).end();
+});
 
-  var server = http.createServer(app);
-  var boot = function () {
-    server.listen(app.get('port'), function () {
+var server = http.createServer(app);
+var boot = function () {
+  server.listen(app.get('port'), function () {
     if ('development' !== app.get('env')) {
       console.info('Express server listening on port ' + app.get('port'));
     }

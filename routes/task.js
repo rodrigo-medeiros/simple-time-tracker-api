@@ -1,7 +1,7 @@
 exports.findByName = function (req, res, next) {
-  var name = req.params.name;
-  req.models.Task.findByName(
-    name,
+  var id = req.params.id;
+  req.models.Task.findById(
+    id,
     function (error, task) {
       if (error) return next(error);
       if (!task)
@@ -23,9 +23,9 @@ exports.findByUser = function (req, res, next) {
 }
 
 exports.getWorklogs = function (req, res, next) {
-  var name = req.params.name;
-  req.models.Task.findByName(
-    name,
+  var id = req.params.id;
+  req.models.Task.findById(
+    id,
     function (error, task) {
       if (error) return next(error);
       if (!task)

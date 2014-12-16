@@ -72,10 +72,10 @@ describe('Task routes', function () {
     });
   });
 
-  describe('/api/task/:name (GET)', function () {
+  describe('/api/task/:id (GET)', function () {
 
     it('should respond 404 to GET', function (done) {
-      URL.pathname = 'api/task/not a valid task'
+      URL.pathname = 'api/task/5210a64f846cb004b5000001'
 
       superagent
         .get(URL)
@@ -86,45 +86,51 @@ describe('Task routes', function () {
     });
 
     it('should respond 200 to GET', function (done) {
-      URL.pathname = 'api/task/' + 'Kill the Lannisters';
-      superagent
-        .get(URL)
-        .end(function (res) {
-          expect(res.status).to.equal(200);
-          done();
-        });
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id;
+        superagent
+          .get(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(200);
+            done();
+          });
+      });
     });
 
 
     it('should return one task when GET', function (done) {
-      URL.pathname = 'api/task/' + 'Kill the Lannisters';
-      superagent
-        .get(URL)
-        .end(function (res) {
-          var task = res.body.task;
-          expect(task).to.only.have.keys('id', 'description', 'user', 'status', 'name', 'worklogs');
-          done();
-        });
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id;
+        superagent
+          .get(URL)
+          .end(function (res) {
+            var task = res.body.task;
+            expect(task).to.only.have.keys('id', 'description', 'user', 'status', 'name', 'worklogs');
+            done();
+          });
+      });
     });
 
     it('should have a user attribute when GET', function (done) {
-      URL.pathname = 'api/task/' + 'Kill the Lannisters';
-      superagent
-        .get(URL)
-        .end(function (res) {
-          var user = res.body.task.user;
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id;
+        superagent
+          .get(URL)
+          .end(function (res) {
+            var user = res.body.task.user;
 
-          expect(user).to.be.ok();
-          expect(user).to.only.have.keys('id', 'username');
-          done();
+            expect(user).to.be.ok();
+            expect(user).to.only.have.keys('id', 'username');
+            done();
+        });
       });
     });
   });
 
-  describe('/api/task/:name/worklog (GET)', function () {
+  describe('/api/task/:id/worklog (GET)', function () {
 
     it('should respond 404 when GET', function (done) {
-      URL.pathname = 'api/task/not a valid name/worklog';
+      URL.pathname = 'api/task/5210a64f846cb004b5000001/worklog';
       superagent
         .get(URL)
         .end(function (res) {
@@ -134,29 +140,33 @@ describe('Task routes', function () {
     });
 
     it('should respond 200 when GET', function (done) {
-      URL.pathname = 'api/task/Kill the Lannisters/worklog';
-      superagent
-        .get(URL)
-        .end(function (res) {
-          expect(res.status).to.equal(200);
-          done();
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id + '/worklog';
+        superagent
+          .get(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(200);
+            done();
+        });
       });
     });
 
     it('should return one worklog when GET', function (done) {
-      URL.pathname = 'api/task/Kill the Lannisters/worklog';
-      superagent
-        .get(URL)
-        .end(function (res) {
-          var worklogs = res.body.worklogs;
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id + '/worklog';
+        superagent
+          .get(URL)
+          .end(function (res) {
+            var worklogs = res.body.worklogs;
 
-          expect(worklogs).to.have.length(1);
+            expect(worklogs).to.have.length(1);
 
-          var worklog = worklogs[0];
+            var worklog = worklogs[0];
 
-          expect(worklog).to.be.ok();
-          expect(worklog).to.only.have.keys('id', 'startedAt', 'timeSpent');
-          done();
+            expect(worklog).to.be.ok();
+            expect(worklog).to.only.have.keys('id', 'startedAt', 'timeSpent');
+            done();
+        });
       });
     });
 

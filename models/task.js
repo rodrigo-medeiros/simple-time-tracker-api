@@ -40,9 +40,9 @@ var taskSchema = mongoose.Schema({
 });
 
 taskSchema.static({
-  findByName: function (name, callback) {
+  findById: function (id, callback) {
     this.findOne({
-      name: name
+      _id: id
     })
       .populate('user', 'username')
       .populate('worklogs', '_id')

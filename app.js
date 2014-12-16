@@ -28,8 +28,8 @@ app.set('port', process.env.PORT || 3000);
 var router = express.Router();
 
 router.post('/task', routes.task.add);
-router.get('/task/:name', routes.task.findByName);
-router.get('/task/:name/worklog', routes.task.getWorklogs);
+router.get('/task/:id', routes.task.findByName);
+router.get('/task/:id/worklog', routes.task.getWorklogs);
 
 router.param('user_id', routes.user.findByUserId);
 router.post('/user', routes.user.add);

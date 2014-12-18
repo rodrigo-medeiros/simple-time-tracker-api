@@ -98,7 +98,7 @@ describe('Task routes', function () {
     });
 
 
-    it('should return one task when GET', function (done) {
+    it('should return the task when GET', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
         URL.pathname = 'api/task/' + task._id;
         superagent

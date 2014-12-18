@@ -102,7 +102,7 @@ describe('User routes', function () {
       });
     });
 
-    it('should return a user', function (done) {
+    it('should return the user', function (done) {
       models.User.findOne({ username: 'aryastark' }, function (error, user) {
         URL.pathname = 'api/user/' + user._id;
 
@@ -214,7 +214,7 @@ describe('User routes', function () {
 
   describe('/api/user/:user_id (DEL)', function () {
 
-    it('should respond 404 to del', function (done) {
+    it('should respond 404 to DEL', function (done) {
       URL.pathname = 'api/user/' + '5210a64f846cb004b5000001';
 
       superagent
@@ -225,7 +225,7 @@ describe('User routes', function () {
         });
     });
 
-    it('should delete a user successfully', function (done) {
+    it('should delete the user successfully', function (done) {
       models.User.findOne({ username: 'aryastark' }, function (error, user) {
         if (error) return next(error);
         URL.pathname = 'api/user/' + user.id;

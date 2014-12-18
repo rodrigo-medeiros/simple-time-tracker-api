@@ -234,7 +234,14 @@ describe('User routes', function () {
           .del(URL)
           .end(function (res) {
             expect(res.status).to.equal(204);
-            done();
+            models.User.findById(user.id, function (error, foundUser) {
+              expect(foundUser).to.be(null);
+
+              models.Worklog.findByUserId(user.id, function (error, worklogs) {
+                expect(worklogs).to.be.empty();
+                done();
+              });
+            });
           });
       });
     });

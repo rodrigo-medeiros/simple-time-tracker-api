@@ -21,61 +21,7 @@ describe('Worklog routes', function () {
     environment.createTaskWithWorklog();
   });
 
-  describe('/api/worklog (POST)', function () {
 
-    it('should respond 400 to POST', function (done) {
-      URL.pathname = 'api/worklog';
-
-      superagent
-        .post(URL)
-        .end(function (res) {
-          expect(res.status).to.equal(400);
-          done();
-        });
-    });
-
-    it('should respond 200 to POST', function (done) {
-      models.Task.findOne({ status: 'Open' }, function (error, task) {
-      URL.pathname = 'api/worklog';
-      var worklog = {
-        startedAt: moment('2014-01-01 13:05').toDate(),
-        timeSpent: 1800,
-        task: task._id,
-        user: task.user
-      };
-
-      superagent
-        .post(URL)
-        .send({ worklog: worklog })
-        .end(function (res) {
-          expect(res.status).to.equal(200);
-          done();
-        });
-      });
-    });
-
-    it('should insert a worklog successfully', function (done) {
-      models.Task.findOne({ status: 'Open' }, function (error, task) {
-      URL.pathname = 'api/worklog';
-      var worklog = {
-        startedAt: moment('2014-01-01 13:05').toDate(),
-        timeSpent: 1800,
-        task: task._id,
-        user: task.user
-      };
-
-      superagent
-        .post(URL)
-        .send({ worklog: worklog })
-        .end(function (res) {
-          var worklogResponse = res.body.response;
-          expect(worklogResponse.message).to.equal("Worklog successfully added.");
-          expect(worklogResponse.data).to.only.have.keys('id', 'startedAt', 'timeSpent', 'task', 'user');
-          done();
-        });
-      });
-    });
-  });
 
   describe('/api/worklog/:id (GET)', function () {
 

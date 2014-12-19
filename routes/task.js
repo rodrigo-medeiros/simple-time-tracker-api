@@ -42,6 +42,23 @@ exports.getWorklogs = function (req, res, next) {
   });
 }
 
+exports.addWorklog = function (req, res, next) {
+  var worklog = req.body.worklog;
+  if (!worklog) return res.status(400).json({ error: "No worklog payload" });
+  req.models.Worklog.create(
+    worklog,
+    function (error, worklogResponse) {
+      if (error) return next(error);
+      var worklog = new req.models.Worklog(worklogResponse);
+      res.json({
+        response: {
+          message: "Worklog successfully added.",
+          data: worklog
+        }
+      });
+  });
+}
+
 exports.add = function (req, res, next) {
   var task = req.body.task;
   if (!task) return res.status(400).json({ error: "No task payload" });

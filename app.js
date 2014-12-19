@@ -37,6 +37,7 @@ var router = express.Router();
 
 router.post('/task', routes.task.add);
 router.get('/task/:id', routes.task.findByName);
+router.post('/task/:id/worklog', routes.task.addWorklog);
 router.get('/task/:id/worklog', routes.task.getWorklogs);
 
 router.param('user_id', routes.user.findByUserId);
@@ -46,7 +47,6 @@ router.get('/user/:user_id/task', routes.user.getTasks);
 router.get('/user/:user_id/worklog', routes.user.getWorklogs);
 router.delete('/user/:user_id', routes.user.del);
 
-router.post('/worklog', routes.worklog.add);
 router.get('/worklog/:id', routes.worklog.findById);
 router.delete('/worklog/:id', routes.worklog.del);
 

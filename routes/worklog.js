@@ -10,23 +10,6 @@ exports.findById = function (req, res, next) {
   });
 }
 
-exports.add = function (req, res, next) {
-  var worklog = req.body.worklog;
-  if (!worklog) return res.status(400).json({ error: "No worklog payload" });
-  req.models.Worklog.create(
-    worklog,
-    function (error, worklogResponse) {
-      if (error) return next(error);
-      var worklog = new req.models.Worklog(worklogResponse);
-      res.json({
-        response: {
-          message: "Worklog successfully added.",
-          data: worklog
-        }
-      });
-  });
-}
-
 exports.del = function (req, res, next) {
   var id = req.params.id;
   req.models.Worklog.findById(

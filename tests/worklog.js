@@ -21,8 +21,6 @@ describe('Worklog routes', function () {
     environment.createTaskWithWorklog();
   });
 
-
-
   describe('/api/worklog/:id (GET)', function () {
 
     it('should respond 404 to GET', function (done) {

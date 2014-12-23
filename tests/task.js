@@ -130,14 +130,16 @@ describe('Task routes', function () {
   describe('/api/task/:id/worklog (POST)', function () {
 
     it('should respond 400 to POST', function (done) {
-      URL.pathname = 'api/task/5210a64f846cb004b5000001/worklog';
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id + '/worklog';
 
-      superagent
-        .post(URL)
-        .end(function (res) {
-          expect(res.status).to.equal(400);
-          done();
-        });
+        superagent
+          .post(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(400);
+            done();
+          });
+      });
     });
 
     it('should respond 200 to POST', function (done) {
@@ -145,9 +147,7 @@ describe('Task routes', function () {
       URL.pathname = 'api/task/' + task._id + '/worklog';
       var worklog = {
         startedAt: moment('2014-01-01 13:05').toDate(),
-        timeSpent: 1800,
-        task: task._id,
-        user: task.user
+        timeSpent: 1800
       };
 
       superagent

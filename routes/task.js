@@ -1,17 +1,23 @@
-exports.findByName = function (req, res, next) {
-  var id = req.params.id;
+exports.findByTaskId = function (req, res, next) {
+  var task_id = req.params.task_id;
   req.models.Task.findById(
-    id,
+    task_id,
     function (error, task) {
       if (error) return next(error);
       if (!task)
         return res.status(404).end();
-      res.json({ task: task });
+      req.task = task;
+      next();
   });
 }
 
+exports.getTask = function (req, res, next) {
+  var task = req.task;
+  res.json({ task: task });
+}
+
 exports.findByUser = function (req, res, next) {
-  var userId = req.params.id;
+  var userId = req.params.task_id;
   req.models.Task.findByUserId(
     userId,
     function (error, tasks) {
@@ -23,28 +29,26 @@ exports.findByUser = function (req, res, next) {
 }
 
 exports.getWorklogs = function (req, res, next) {
-  var id = req.params.id;
-  req.models.Task.findById(
-    id,
-    function (error, task) {
-      if (error) return next(error);
-      if (!task)
-        return res.status(404).end();
-
-      req.models.Worklog.findByTaskId(
-        task._id,
-        function (error, worklogs) {
-          if (error) return next(error);
-          if (!worklogs || !worklogs.length)
-            return res.status(404).end();
-          res.json({ worklogs: worklogs });
-      });
-  });
+  var task = req.task;
+    req.models.Worklog.findByTaskId(
+      task.id,
+      function (error, worklogs) {
+        if (error) return next(error);
+        if (!worklogs || !worklogs.length)
+          return res.status(404).end();
+        res.json({ worklogs: worklogs });
+    });
 }
 
 exports.addWorklog = function (req, res, next) {
-  var worklog = req.body.worklog;
+  var worklog = req.body.worklog,
+      task = req.task;
   if (!worklog) return res.status(400).json({ error: "No worklog payload" });
+
+  worklog.task = task.id;
+  worklog.user = task.user;
+  console.log(worklog);
+
   req.models.Worklog.create(
     worklog,
     function (error, worklogResponse) {

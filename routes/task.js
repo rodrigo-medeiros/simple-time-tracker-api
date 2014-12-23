@@ -47,7 +47,6 @@ exports.addWorklog = function (req, res, next) {
 
   worklog.task = task.id;
   worklog.user = task.user;
-  console.log(worklog);
 
   req.models.Worklog.create(
     worklog,

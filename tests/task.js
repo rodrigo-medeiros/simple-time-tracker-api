@@ -72,7 +72,7 @@ describe('Task routes', function () {
     });
   });
 
-  describe('/api/task/:id (GET)', function () {
+  describe('/api/task/:task_id (GET)', function () {
 
     it('should respond 404 to GET', function (done) {
       URL.pathname = 'api/task/5210a64f846cb004b5000001'
@@ -127,7 +127,7 @@ describe('Task routes', function () {
     });
   });
 
-  describe('/api/task/:id/worklog (POST)', function () {
+  describe('/api/task/:task_id/worklog (POST)', function () {
 
     it('should respond 400 to POST', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
@@ -183,7 +183,7 @@ describe('Task routes', function () {
     });
   });
 
-  describe('/api/task/:id/worklog (GET)', function () {
+  describe('/api/task/:task_id/worklog (GET)', function () {
 
     it('should respond 404 when GET', function (done) {
       URL.pathname = 'api/task/5210a64f846cb004b5000001/worklog';

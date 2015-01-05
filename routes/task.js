@@ -82,6 +82,25 @@ exports.addWorklog = function (req, res, next) {
   });
 }
 
+exports.deleteWorklog = function (req, res, next) {
+  var task = req.task,
+      worklogId = req.params.worklog_id;
+  req.models.Worklog.findByIdAndTaskId(
+    {
+      id: worklogId,
+      taskId: task.id
+    },
+    function (error, worklog) {
+      if (error) return next(error);
+
+      worklog.remove(function (error, doc) {
+        if (error) return next(error);
+        res.status(204).end();
+      });
+    }
+  );
+}
+
 exports.add = function (req, res, next) {
   var task = req.body.task;
   if (!task) return res.status(400).json({ error: "No task payload" });

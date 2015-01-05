@@ -267,6 +267,34 @@ describe('Task routes', function () {
     });
   });
 
+  describe('/api/task/:task_id/worklog/:worklog_id (DEL)', function () {
+
+    it('should respond 404 to DEL', function (done) {
+      URL.pathname = 'api/task/5210a64f846cb004b5000001/worklog/5210a64f846cb004b5000001';
+      superagent
+        .del(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(404);
+          done();
+        });
+    });
+
+    it('should delete a worklog successfully', function (done) {
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        if (error) return next(error);
+
+        URL.pathname = 'api/task/' + task.id + '/worklog/' + task.worklogs[0];
+
+        superagent
+          .del(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(204);
+            done();
+          });
+      });
+    });
+  });
+
   after(function () {
     shutdown();
     environment.cleanDb();

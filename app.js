@@ -40,6 +40,7 @@ router.post('/task', routes.task.add);
 router.get('/task/:task_id', routes.task.getTask);
 router.post('/task/:task_id/worklog', routes.task.addWorklog);
 router.get('/task/:task_id/worklog', routes.task.getWorklogs);
+router.get('/task/:task_id/worklog/:worklog_id', routes.task.getWorklog);
 
 router.param('user_id', routes.user.findByUserId);
 router.post('/user', routes.user.add);

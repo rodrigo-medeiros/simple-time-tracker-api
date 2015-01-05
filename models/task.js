@@ -45,7 +45,7 @@ taskSchema.static({
       _id: id
     })
       .populate('user', 'username')
-      .populate('worklogs', '_id')
+      .populate('worklogs', 'id')
       .select('-__v')
       .sort({ _id: -1 })
       .exec(callback);
@@ -56,7 +56,7 @@ taskSchema.static({
       user: userId
     })
       .populate('user', 'username')
-      .populate('worklogs', '_id')
+      .populate('worklogs', 'id')
       .select('-__v')
       .sort({ _id: -1 })
       .exec(callback);

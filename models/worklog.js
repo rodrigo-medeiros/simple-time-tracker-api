@@ -32,6 +32,15 @@ workLogSchema.static({
       .exec(callback);
   },
 
+  findByIdAndTaskId: function (options, callback) {
+    this.findOne({
+      _id: options.id,
+      task: options.taskId
+    })
+      .select('-task -user -__v')
+      .exec(callback);
+  },
+
   findByTaskId: function (taskId, callback) {
     this.find({
       task: taskId

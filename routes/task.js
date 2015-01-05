@@ -30,14 +30,30 @@ exports.findByUser = function (req, res, next) {
 
 exports.getWorklogs = function (req, res, next) {
   var task = req.task;
-    req.models.Worklog.findByTaskId(
-      task.id,
-      function (error, worklogs) {
-        if (error) return next(error);
-        if (!worklogs || !worklogs.length)
-          return res.status(404).end();
-        res.json({ worklogs: worklogs });
-    });
+  req.models.Worklog.findByTaskId(
+    task.id,
+    function (error, worklogs) {
+      if (error) return next(error);
+      if (!worklogs || !worklogs.length)
+        return res.status(404).end();
+      res.json({ worklogs: worklogs });
+  });
+}
+
+exports.getWorklog = function (req, res, next) {
+  var task = req.task,
+      worklogId = req.params.worklog_id;
+  req.models.Worklog.findByIdAndTaskId(
+    {
+      id: worklogId,
+      taskId: task.id
+    },
+    function (error, worklog) {
+      if (error) return next(error);
+      if (!worklog)
+        return res.status(404).end();
+      res.json({ worklog: worklog })
+  });
 }
 
 exports.addWorklog = function (req, res, next) {
@@ -53,11 +69,15 @@ exports.addWorklog = function (req, res, next) {
     function (error, worklogResponse) {
       if (error) return next(error);
       var worklog = new req.models.Worklog(worklogResponse);
-      res.json({
-        response: {
-          message: "Worklog successfully added.",
-          data: worklog
-        }
+      task.worklogs.push(worklogResponse.id)
+      task.save(function (error, taskResponse) {
+        if (error) return next(error);
+        res.json({
+          response: {
+            message: "Worklog successfully added.",
+            data: worklog
+          }
+        });
       });
   });
 }

@@ -228,6 +228,45 @@ describe('Task routes', function () {
 
   });
 
+  describe('/api/task/:task_id/worklog/:worklog_id (GET)', function () {
+
+    it('should respond 404 when GET', function (done) {
+      URL.pathname = 'api/task/5210a64f846cb004b5000001/worklog/5210a64f846cb004b5000001';
+      superagent
+        .get(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(404);
+          done();
+      });
+    });
+
+    it('should respond 200 when GET', function (done) {
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id + '/worklog/' + task.worklogs[0];
+        superagent
+          .get(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(200);
+            done();
+        });
+      });
+    });
+
+    it('should return one worklog when GET', function (done) {
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id + '/worklog/' + task.worklogs[0];
+        superagent
+          .get(URL)
+          .end(function (res) {
+            var worklog = res.body.worklog;
+            expect(worklog).to.be.ok();
+            expect(worklog).to.only.have.keys('id', 'startedAt', 'timeSpent');
+            done();
+        });
+      });
+    });
+  });
+
   after(function () {
     shutdown();
     environment.cleanDb();

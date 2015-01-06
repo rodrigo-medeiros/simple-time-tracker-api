@@ -48,7 +48,7 @@ router.post('/user', routes.user.add);
 router.get('/user/:user_id', routes.user.getUser);
 router.get('/user/:user_id/task', routes.user.getTasks);
 router.get('/user/:user_id/worklog', routes.user.getWorklogs);
-router.delete('/user/:user_id', routes.user.del);
+router.delete('/user/:user_id', routes.user.delete);
 
 app.use('/api', router);
 

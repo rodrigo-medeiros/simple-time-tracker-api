@@ -50,7 +50,7 @@ exports.add = function (req, res, next) {
   });
 }
 
-exports.del = function (req, res, next) {
+exports.delete = function (req, res, next) {
   var user = req.user;
   req.models.Worklog.findByUserId(
     user.id,

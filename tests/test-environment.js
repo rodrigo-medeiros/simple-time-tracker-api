@@ -9,8 +9,8 @@ function createTaskWithWorklog () {
     name: 'Kill the Lannisters',
     description: "Make sure Cersei is the first.",
     status: 'Open',
-    worklogs: [ new ObjectId ],
-    user: new ObjectId
+    worklogs: [ new ObjectId() ],
+    user: new ObjectId()
   });
 
   task.save(function (error) {
@@ -54,7 +54,7 @@ exports.cleanDb = function () {
   Task.remove({}).exec();
   Worklog.remove({}).exec();
   User.remove({}).exec();
-}
+};
 
 exports.createTaskWithWorklog = createTaskWithWorklog;
 exports.createWorklog = createWorklog;

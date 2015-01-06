@@ -42,7 +42,7 @@ describe('User routes', function () {
         username: 'tyrionlannister',
         email: 'tyrion@casterlyrock.com',
         password: 'wine&girls'
-      }
+      };
 
       superagent
         .post(URL)
@@ -62,7 +62,7 @@ describe('User routes', function () {
         username: 'tyrionlannister',
         email: 'tyrion@casterlyrock.com',
         password: 'wine&girls'
-      }
+      };
 
       superagent
         .post(URL)

@@ -75,7 +75,7 @@ describe('Task routes', function () {
   describe('/api/task/:task_id (GET)', function () {
 
     it('should respond 404 to GET', function (done) {
-      URL.pathname = 'api/task/5210a64f846cb004b5000001'
+      URL.pathname = 'api/task/5210a64f846cb004b5000001';
 
       superagent
         .get(URL)

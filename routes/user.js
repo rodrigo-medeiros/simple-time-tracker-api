@@ -7,12 +7,12 @@ exports.findByUserId = function (req, res, next, user_id) {
       req.user = user;
       next();
   });
-}
+};
 
 exports.getUser = function (req, res, next) {
   var user = req.user;
   res.json({ user: user });
-}
+};
 
 exports.getTasks = function (req, res, next) {
   var user = req.user;
@@ -24,7 +24,7 @@ exports.getTasks = function (req, res, next) {
         return res.status(404).end();
       res.json({ tasks: tasks });
   });
-}
+};
 
 exports.getWorklogs = function (req, res, next) {
   var user = req.user;
@@ -36,7 +36,7 @@ exports.getWorklogs = function (req, res, next) {
         return res.status(404).end();
       res.json({ worklogs: worklogs });
   });
-}
+};
 
 exports.add = function (req, res, next) {
   var user = req.body.user;
@@ -48,7 +48,7 @@ exports.add = function (req, res, next) {
       data: userResponse
     }});
   });
-}
+};
 
 exports.delete = function (req, res, next) {
   var user = req.user;
@@ -67,8 +67,8 @@ exports.delete = function (req, res, next) {
         res.status(204).end();
       });
   });
-}
+};
 
 exports.authenticate = function (req, res, next) {
   // TODO
-}
+};

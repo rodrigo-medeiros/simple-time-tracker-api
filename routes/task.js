@@ -9,12 +9,12 @@ exports.findByTaskId = function (req, res, next) {
       req.task = task;
       next();
   });
-}
+};
 
 exports.getTask = function (req, res, next) {
   var task = req.task;
   res.json({ task: task });
-}
+};
 
 exports.findByUser = function (req, res, next) {
   var userId = req.params.task_id;
@@ -26,7 +26,7 @@ exports.findByUser = function (req, res, next) {
         return res.status(404).end();
       res.json({ tasks: tasks });
   });
-}
+};
 
 exports.getWorklogs = function (req, res, next) {
   var task = req.task;
@@ -38,7 +38,7 @@ exports.getWorklogs = function (req, res, next) {
         return res.status(404).end();
       res.json({ worklogs: worklogs });
   });
-}
+};
 
 exports.getWorklog = function (req, res, next) {
   var task = req.task,
@@ -52,9 +52,9 @@ exports.getWorklog = function (req, res, next) {
       if (error) return next(error);
       if (!worklog)
         return res.status(404).end();
-      res.json({ worklog: worklog })
+      res.json({ worklog: worklog });
   });
-}
+};
 
 exports.addWorklog = function (req, res, next) {
   var worklog = req.body.worklog,
@@ -69,7 +69,7 @@ exports.addWorklog = function (req, res, next) {
     function (error, worklogResponse) {
       if (error) return next(error);
       var worklog = new req.models.Worklog(worklogResponse);
-      task.worklogs.push(worklogResponse.id)
+      task.worklogs.push(worklogResponse.id);
       task.save(function (error, taskResponse) {
         if (error) return next(error);
         res.json({
@@ -80,7 +80,7 @@ exports.addWorklog = function (req, res, next) {
         });
       });
   });
-}
+};
 
 exports.deleteWorklog = function (req, res, next) {
   var task = req.task,
@@ -99,7 +99,7 @@ exports.deleteWorklog = function (req, res, next) {
       });
     }
   );
-}
+};
 
 exports.add = function (req, res, next) {
   var task = req.body.task;
@@ -113,12 +113,12 @@ exports.add = function (req, res, next) {
       }
     });
   });
-}
+};
 
 exports.edit = function (req, res, next) {
   // TODO
-}
+};
 
 exports.del = function (req, res, next) {
   // TODO
-}
+};

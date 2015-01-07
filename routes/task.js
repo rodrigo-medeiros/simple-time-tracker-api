@@ -28,6 +28,20 @@ exports.findByUser = function (req, res, next) {
   });
 };
 
+exports.add = function (req, res, next) {
+  var task = req.body.task;
+  if (!task) return res.status(400).json({ error: "No task payload" });
+  req.models.Task.create(task, function (error, taskResponse) {
+    if (error) return next(error);
+    res.json({
+      response: {
+        message: "Task successfully added.",
+        data: taskResponse
+      }
+    });
+  });
+};
+
 exports.getWorklogs = function (req, res, next) {
   var task = req.task;
   req.models.Worklog.findByTaskId(
@@ -99,20 +113,6 @@ exports.deleteWorklog = function (req, res, next) {
       });
     }
   );
-};
-
-exports.add = function (req, res, next) {
-  var task = req.body.task;
-  if (!task) return res.status(400).json({ error: "No task payload" });
-  req.models.Task.create(task, function (error, taskResponse) {
-    if (error) return next(error);
-    res.json({
-      response: {
-        message: "Task successfully added.",
-        data: taskResponse
-      }
-    });
-  });
 };
 
 exports.edit = function (req, res, next) {

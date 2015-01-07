@@ -1,3 +1,5 @@
+var async = require('async');
+
 exports.findByUserId = function (req, res, next, user_id) {
   req.models.User.findById(
     user_id,
@@ -51,24 +53,63 @@ exports.add = function (req, res, next) {
 };
 
 exports.delete = function (req, res, next) {
-  var user = req.user;
-  req.models.Worklog.findByUserId(
-    user.id,
-    function (error, worklogs) {
-      if (error) return next(error);
-      worklogs.forEach(function (worklog) {
-        worklog.remove(function (error, doc) {
-          if (error) return next(error);
-        });
-      });
-
-      user.remove(function (error, doc) {
-        if (error) return next(error);
-        res.status(204).end();
-      });
+  async.series({
+    deleteWorklogs: function (callback) {
+      deleteWorklogs(req, callback);
+    },
+    cleanTaskRelation: function (callback) {
+      cleanTaskRelation(req, callback);
+    },
+    deleteUser: function (callback) {
+      deleteUser(req, callback);
+    }
+  }, function (error, results) {
+    res.status(204).end();
   });
 };
 
 exports.authenticate = function (req, res, next) {
   // TODO
+};
+
+function deleteWorklogs (req, callback) {
+  var user = req.user;
+
+  req.models.Worklog.findByUserId(
+    user.id,
+    function (error, worklogs) {
+      if (error) return callback(error);
+      worklogs.forEach(function (worklog) {
+        worklog.remove(function (error, doc) {
+          if (error) return callback(error);
+          callback(null, "Worklog removed: " + doc);
+        });
+      });
+  });
+};
+
+function cleanTaskRelation (req, callback) {
+  var user = req.user;
+
+  req.models.Task.findByUserId(
+    user.id,
+    function (error, tasks) {
+      if (error) return callback(error);
+      tasks.forEach(function (task) {
+        task.user = null;
+        task.save(function (error, results) {
+          if (error) return callback(error);
+          callback(null, "Relation between task " + task + " and user " + user + " removed.");
+        });
+      });
+  });
+};
+
+function deleteUser (req, callback) {
+  var user = req.user;
+
+  user.remove(function (error, doc) {
+    if (error) return callback(error);
+    callback(null, "User removed: " + doc);
+  });
 };

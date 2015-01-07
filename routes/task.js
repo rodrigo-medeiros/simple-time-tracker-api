@@ -1,3 +1,5 @@
+var async = require('async');
+
 exports.findByTaskId = function (req, res, next) {
   var task_id = req.params.task_id;
   req.models.Task.findById(
@@ -39,6 +41,19 @@ exports.add = function (req, res, next) {
         data: taskResponse
       }
     });
+  });
+};
+
+exports.delete = function (req, res, next) {
+  async.series({
+    deleteWorklogs: function (callback) {
+      deleteWorklogs(req, callback);
+    },
+    deleteTask: function (callback) {
+      deleteTask(req, callback);
+    }
+  }, function (error, results) {
+    res.status(204).end();
   });
 };
 
@@ -121,4 +136,26 @@ exports.edit = function (req, res, next) {
 
 exports.del = function (req, res, next) {
   // TODO
+};
+
+function deleteWorklogs (req, callback) {
+  var task = req.task;
+
+  req.models.Worklog.findByTaskId(
+    task.id,
+    function (error, worklogs) {
+      if (error) return callback(error);
+
+      async.each(worklogs, function (worklog, callback) {
+        worklog.remove(callback);
+      }, function (error) {
+        if (error) return callback(error);
+        callback(null, "Worklogs deleted.");
+      });
+  });
+};
+
+function deleteTask (req, callback) {
+  var task = req.task;
+  task.remove(callback);
 };

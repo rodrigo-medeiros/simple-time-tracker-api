@@ -6,7 +6,8 @@ var boot = require('../app').boot,
     url = require('url'),
     superagent = require('superagent'),
     expect = require('expect.js'),
-    moment = require('moment');
+    moment = require('moment'),
+    async = require('async');
 
 var URL = {
   protocol: 'http',
@@ -127,6 +128,53 @@ describe('Task routes', function () {
     });
   });
 
+  describe('/api/task/:task_id (DEL)', function () {
+
+    it('should respond 404 to DEL', function (done) {
+        URL.pathname = 'api/task/5210a64f846cb004b5000001';
+        superagent
+          .del(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(404);
+            done();
+        });
+    });
+
+    it('should delete the task successfully', function (done) {
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task.id;
+        superagent
+          .del(URL)
+          .end(function (res) {
+            expect(res.status).to.equal(204);
+
+            async.series({
+              checkWorklogs: function (callback) {
+                models.Worklog.findByTaskId(
+                  task.id,
+                  function (error, worklogs) {
+                    if (error) return callback(error);
+                    expect(worklogs).to.be.empty();
+                    callback(null, "Worklogs deleted.");
+                });
+              },
+              checkTask: function (callback) {
+                models.Task.findById(
+                  task.id,
+                  function (error, task) {
+                    if (error) return callback(error);
+                    expect(task).to.be(null);
+                    callback(null, "Task deleted.");
+                });
+              }
+            }, function (error, results) {
+              done();
+            });
+        });
+      });
+    });
+  });
+
   describe('/api/task/:task_id/worklog (POST)', function () {
 
     it('should respond 400 to POST', function (done) {
@@ -215,7 +263,7 @@ describe('Task routes', function () {
           .end(function (res) {
             var worklogs = res.body.worklogs;
 
-            expect(worklogs).to.have.length(3);
+            expect(worklogs).to.have.length(2);
 
             var worklog = worklogs[0];
 

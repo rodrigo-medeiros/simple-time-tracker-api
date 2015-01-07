@@ -110,4 +110,4 @@ function cleanTaskRelation (req, callback) {
 function deleteUser (req, callback) {
   var user = req.user;
   user.remove(callback);
-};
+  };

@@ -79,11 +79,12 @@ function deleteWorklogs (req, callback) {
     user.id,
     function (error, worklogs) {
       if (error) return callback(error);
-      worklogs.forEach(function (worklog) {
-        worklog.remove(function (error, doc) {
-          if (error) return callback(error);
-          callback(null, "Worklog removed: " + doc);
-        });
+
+      async.each(worklogs, function (worklog, callback) {
+        worklog.remove(callback);
+      }, function (error) {
+        if (error) return callback(error);
+        callback(null, "Worklogs deleted.");
       });
   });
 };
@@ -95,21 +96,18 @@ function cleanTaskRelation (req, callback) {
     user.id,
     function (error, tasks) {
       if (error) return callback(error);
-      tasks.forEach(function (task) {
+
+      async.each(tasks, function (task, callback) {
         task.user = null;
-        task.save(function (error, results) {
-          if (error) return callback(error);
-          callback(null, "Relation between task " + task + " and user " + user + " removed.");
-        });
+        task.save(callback);
+      }, function (error) {
+        if (error) return callback(error);
+        callback(null, "Relation between tasks and user removed.");
       });
   });
 };
 
 function deleteUser (req, callback) {
   var user = req.user;
-
-  user.remove(function (error, doc) {
-    if (error) return callback(error);
-    callback(null, "User removed: " + doc);
-  });
+  user.remove(callback);
 };

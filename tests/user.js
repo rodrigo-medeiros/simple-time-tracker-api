@@ -6,7 +6,8 @@ var boot = require('../app').boot,
     url = require('url'),
     superagent = require('superagent'),
     expect = require('expect.js'),
-    moment = require('moment');
+    moment = require('moment'),
+    async = require('async');
 
 var URL = {
   protocol: 'http',
@@ -234,13 +235,32 @@ describe('User routes', function () {
           .del(URL)
           .end(function (res) {
             expect(res.status).to.equal(204);
-            models.User.findById(user.id, function (error, foundUser) {
-              expect(foundUser).to.be(null);
 
-              models.Worklog.findByUserId(user.id, function (error, worklogs) {
-                expect(worklogs).to.be.empty();
-                done();
-              });
+            async.series({
+              checkUser: function (callback) {
+                models.User.findById(user.id, function (error, foundUser) {
+                  if (error) return callback(error);
+                  expect(foundUser).to.be(null);
+                  callback(null, "User deleted.");
+                });
+              },
+              checkWorklogs: function (callback) {
+                models.Worklog.findByUserId(user.id, function (error, worklogs) {
+                  if (error) return callback(error);
+                  expect(worklogs).to.be.empty();
+                  callback(null, "Worklogs deleted.");
+                });
+              },
+              checkTasks: function (callback) {
+                models.Task.findByUserId(user.id, function (error, tasks) {
+                  if (error) return callback(error);
+                  expect(tasks).to.be.empty();
+                  callback(null, "Relation between user and tasks removed.");
+                });
+              },
+            },
+            function (error, results){
+              done();
             });
           });
       });

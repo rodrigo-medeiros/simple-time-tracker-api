@@ -63,11 +63,12 @@ app.all('*', function (req, res) {
 });
 
 var server = http.createServer(app);
-var boot = function () {
+var boot = function (done) {
   server.listen(app.get('port'), function () {
     if ('development' !== app.get('env')) {
       console.info('Express server listening on port ' + app.get('port'));
     }
+    done();
   });
 };
 

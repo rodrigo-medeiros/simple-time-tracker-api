@@ -16,23 +16,20 @@ var URL = {
 };
 
 describe('User routes', function () {
-  beforeEach(function () {
+  before(function (done) {
+    boot(done);
+  });
+  beforeEach(function (done) {
     async.series({
-      boot: function (callback) {
-        boot();
-        callback();
-      },
       cleanDb: function (callback) {
-        environment.cleanDb();
-        callback();
+        environment.cleanDb(callback);
       },
       createTaskWithWorklog: function (callback) {
-        environment.createTaskWithWorklog();
-        callback();
+        environment.createTaskWithWorklog(callback);
       }
     }, function (error, results) {
       if (error) throw new Error(error);
-      console.log("Before each of user.js finished.");
+      done();
     });
   });
 

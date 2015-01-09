@@ -16,10 +16,24 @@ var URL = {
 };
 
 describe('Task routes', function () {
-  before(function () {
-    boot();
-    environment.cleanDb();
-    environment.createTaskWithWorklog();
+  beforeEach(function () {
+    async.series({
+      boot: function (callback) {
+        boot();
+        callback();
+      },
+      cleanDb: function (callback) {
+        environment.cleanDb();
+        callback();
+      },
+      createTaskWithWorklog: function (callback) {
+        environment.createTaskWithWorklog();
+        callback();
+      }
+    }, function (error, results) {
+      if (error) throw new Error(error);
+      console.log("Before each of task.js finished.");
+    });
   });
 
   describe('/api/task (POST)', function () {
@@ -263,7 +277,7 @@ describe('Task routes', function () {
           .end(function (res) {
             var worklogs = res.body.worklogs;
 
-            expect(worklogs).to.have.length(2);
+            expect(worklogs).to.have.length(1);
 
             var worklog = worklogs[0];
 

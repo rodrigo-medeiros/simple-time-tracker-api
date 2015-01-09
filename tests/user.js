@@ -16,10 +16,24 @@ var URL = {
 };
 
 describe('User routes', function () {
-  before(function () {
-    boot();
-    environment.cleanDb();
-    environment.createTaskWithWorklog();
+  beforeEach(function () {
+    async.series({
+      boot: function (callback) {
+        boot();
+        callback();
+      },
+      cleanDb: function (callback) {
+        environment.cleanDb();
+        callback();
+      },
+      createTaskWithWorklog: function (callback) {
+        environment.createTaskWithWorklog();
+        callback();
+      }
+    }, function (error, results) {
+      if (error) throw new Error(error);
+      console.log("Before each of user.js finished.");
+    });
   });
 
   describe('/api/user (POST)', function () {

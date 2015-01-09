@@ -2,7 +2,8 @@ var Task = require('../models').Task,
     Worklog = require('../models').Worklog,
     User = require('../models').User,
     ObjectId = require('mongoose').Types.ObjectId,
-    moment = require('moment');
+    moment = require('moment'),
+    async = require('async');
 
 function createTaskWithWorklog () {
   var task = new Task({
@@ -13,14 +14,23 @@ function createTaskWithWorklog () {
     user: new ObjectId()
   });
 
-  task.save(function (error) {
-    if (error) return error;
-    createUser(false, task);
-    createWorklog(task);
+  async.series({
+    createTask: function (callback) {
+      task.save(callback);
+    },
+    createUser: function (callback) {
+      createUser(false, task, callback);
+    },
+    createWorklog: function (callback) {
+      createWorklog(task, callback);
+    }
+  }, function (error, results) {
+    if (error) throw new Error(error);
+    console.log("Before each of user.js finished.");
   });
 }
 
-function createWorklog (task) {
+function createWorklog (task, callback) {
   var log = new Worklog({
     _id: task.worklogs[0],
     startedAt: moment('2014-01-01 09:05').toDate(),
@@ -29,12 +39,10 @@ function createWorklog (task) {
     user: task.user
   });
 
-  log.save(function (error) {
-    if (error) return error;
-  });
+  log.save(callback);
 }
 
-function createUser (isAdmin, task) {
+function createUser (isAdmin, task, callback) {
   var user = new User({
     _id: task.user,
     firstName: 'Arya',
@@ -45,9 +53,7 @@ function createUser (isAdmin, task) {
     admin: isAdmin || false
   });
 
-  user.save(function (error) {
-    if (error) return error;
-  });
+  user.save(callback);
 }
 
 exports.cleanDb = function () {

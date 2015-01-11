@@ -88,7 +88,7 @@ exports.getWorklog = function (req, res, next) {
 exports.addWorklog = function (req, res, next) {
   var worklog = req.body.worklog,
       task = req.task;
-  if (!worklog) return res.status(400).json({ error: "No worklog payload" });
+  if (!worklog) return res.status(400).json({ error: "No worklog payload." });
 
   worklog.task = task.id;
   worklog.user = task.user;
@@ -131,11 +131,20 @@ exports.deleteWorklog = function (req, res, next) {
 };
 
 exports.edit = function (req, res, next) {
-  // TODO
-};
+  var task = req.task,
+      taskPayload = req.body.task;
+  if (!taskPayload) return res.status(400).json({ error: "No task payload." });
 
-exports.del = function (req, res, next) {
-  // TODO
+  task.set(taskPayload);
+  task.save(function (error, taskResponse) {
+    if (error) return next(error);
+    res.json({
+      response: {
+        message: "Task successfully updated.",
+        data: taskResponse.toJSON()
+      }
+    });
+  });
 };
 
 function deleteWorklogs (req, callback) {

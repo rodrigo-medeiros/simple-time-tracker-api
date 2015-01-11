@@ -139,16 +139,74 @@ describe('Task routes', function () {
     });
   });
 
+  describe('/api/task/:task_id (PUT)', function () {
+
+    it('should respond 404 to PUT', function (done) {
+      URL.pathname = 'api/task/5210a64f846cb004b5000001';
+      superagent
+        .put(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(404);
+          done();
+      });
+    });
+
+    it('should respond 200 to PUT', function (done) {
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id;
+        var task = {
+          status: 'In Progress'
+        };
+
+        superagent
+          .put(URL)
+          .send({ task: task })
+          .end(function (res) {
+            expect(res.status).to.equal(200);
+            done();
+        });
+      });
+    });
+
+    it('should update a task successfully', function (done) {
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+        URL.pathname = 'api/task/' + task._id;
+        var task = {
+          name: "Kill the Lannisters NOW!",
+          status: 'Open'
+        };
+
+        superagent
+          .put(URL)
+          .send({ task: task })
+          .end(function (res) {
+            expect(res.status).to.equal(200);
+
+            var response = res.body.response;
+            expect(response).to.be.ok();
+            expect(response.message).to.be("Task successfully updated.");
+
+            var task = response.data;
+            expect(task).to.be.ok();
+            expect(task).to.only.have.keys('id', 'name', 'description', 'status', 'user', 'worklogs');
+            expect(task.name).to.be("Kill the Lannisters NOW!");
+            expect(task.status).to.be('Open');
+            done();
+        });
+      });
+    });
+  });
+
   describe('/api/task/:task_id (DEL)', function () {
 
     it('should respond 404 to DEL', function (done) {
-        URL.pathname = 'api/task/5210a64f846cb004b5000001';
-        superagent
-          .del(URL)
-          .end(function (res) {
-            expect(res.status).to.equal(404);
-            done();
-        });
+      URL.pathname = 'api/task/5210a64f846cb004b5000001';
+      superagent
+        .del(URL)
+        .end(function (res) {
+          expect(res.status).to.equal(404);
+          done();
+      });
     });
 
     it('should delete the task successfully', function (done) {

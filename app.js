@@ -38,6 +38,7 @@ var router = express.Router();
 router.param('task_id', routes.task.findByTaskId);
 router.post('/task', routes.task.add);
 router.get('/task/:task_id', routes.task.getTask);
+router.put('/task/:task_id', routes.task.edit);
 router.delete('/task/:task_id', routes.task.delete);
 router.post('/task/:task_id/worklog', routes.task.addWorklog);
 router.get('/task/:task_id/worklog', routes.task.getWorklogs);

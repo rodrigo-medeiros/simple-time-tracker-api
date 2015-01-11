@@ -162,9 +162,9 @@ function deleteWorklogs (req, callback) {
         callback(null, "Worklogs deleted.");
       });
   });
-};
+}
 
 function deleteTask (req, callback) {
   var task = req.task;
   task.remove(callback);
-};
+}

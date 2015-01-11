@@ -154,13 +154,13 @@ describe('Task routes', function () {
     it('should respond 200 to PUT', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
         URL.pathname = 'api/task/' + task._id;
-        var task = {
+        var taskPayload = {
           status: 'In Progress'
         };
 
         superagent
           .put(URL)
-          .send({ task: task })
+          .send({ task: taskPayload })
           .end(function (res) {
             expect(res.status).to.equal(200);
             done();
@@ -171,14 +171,14 @@ describe('Task routes', function () {
     it('should update a task successfully', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
         URL.pathname = 'api/task/' + task._id;
-        var task = {
+        var taskPayload = {
           name: "Kill the Lannisters NOW!",
           status: 'Open'
         };
 
         superagent
           .put(URL)
-          .send({ task: task })
+          .send({ task: taskPayload })
           .end(function (res) {
             expect(res.status).to.equal(200);
 

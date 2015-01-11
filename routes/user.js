@@ -87,7 +87,7 @@ function deleteWorklogs (req, callback) {
         callback(null, "Worklogs deleted.");
       });
   });
-};
+}
 
 function cleanTaskRelation (req, callback) {
   var user = req.user;
@@ -105,9 +105,9 @@ function cleanTaskRelation (req, callback) {
         callback(null, "Relation between tasks and user removed.");
       });
   });
-};
+}
 
 function deleteUser (req, callback) {
   var user = req.user;
   user.remove(callback);
-  };
+}

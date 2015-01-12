@@ -8,9 +8,9 @@
     "test": "mocha --colors --recursive tests/"
   },
   "keywords": [
-    "node.js",
-    "express.js",
-    "socket.io",
+    "async",
+    "express",
+    "mongoose",
     "mongodb",
     "task"
   ],

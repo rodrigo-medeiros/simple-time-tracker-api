@@ -77,7 +77,13 @@ describe('Task routes', function () {
           .end(function (res) {
             var taskResponse = res.body.response;
             expect(taskResponse.message).to.be.equal("Task successfully added.");
-            expect(taskResponse.data).to.only.have.keys('id', 'name', 'description', 'status', 'user', 'worklogs');
+
+	    var task = taskResponse.data;
+	    expect(task).to.be.ok();
+            expect(task).to.only.have.keys('id', 'name', 'description', 'status', 'user', 'worklogs');
+	    expect(task.name).to.equal("Go to Bravos");
+	    expect(task.description).to.equal("I need to learn how to became a killer.");
+	    expect(task.user).to.equal(user.id);
             done();
           });
       });
@@ -110,7 +116,7 @@ describe('Task routes', function () {
     });
 
 
-    it('should return the task when GET', function (done) {
+    it('should return the task', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
         URL.pathname = 'api/task/' + task._id;
         superagent
@@ -123,7 +129,7 @@ describe('Task routes', function () {
       });
     });
 
-    it('should have a user attribute when GET', function (done) {
+    it('should have a user attribute', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
         URL.pathname = 'api/task/' + task._id;
         superagent

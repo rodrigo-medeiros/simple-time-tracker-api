@@ -33,7 +33,7 @@ function createTaskWithWorklog (done) {
 function createWorklog (task, callback) {
   var log = new Worklog({
     _id: task.worklogs[0],
-    startedAt: moment('2014-01-01 09:05').toDate(),
+    startedAt: moment('2014-01-01 09:00').toDate(),
     timeSpent: 3600,
     task: task._id,
     user: task.user

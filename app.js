@@ -36,6 +36,7 @@ app.set('port', process.env.PORT || 3000);
 var router = express.Router();
 
 router.param('task_id', routes.task.findByTaskId);
+router.param('worklog_id', routes.task.findByWorklogId);
 router.post('/task', routes.task.add);
 router.get('/task/:task_id', routes.task.getTask);
 router.put('/task/:task_id', routes.task.edit);
@@ -43,6 +44,7 @@ router.delete('/task/:task_id', routes.task.delete);
 router.post('/task/:task_id/worklog', routes.task.addWorklog);
 router.get('/task/:task_id/worklog', routes.task.getWorklogs);
 router.get('/task/:task_id/worklog/:worklog_id', routes.task.getWorklog);
+router.put('/task/:task_id/worklog/:worklog_id', routes.task.editWorklog);
 router.delete('/task/:task_id/worklog/:worklog_id', routes.task.deleteWorklog);
 
 router.param('user_id', routes.user.findByUserId);

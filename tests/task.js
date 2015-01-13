@@ -390,6 +390,74 @@ describe('Task routes', function () {
     });
   });
 
+  describe('/api/task/:task_id/worklog/:worklog_id (PUT)', function () {
+
+    it('should respond 404 to PUT', function (done) {
+      URL.pathname = 'api/task/5210a64f846cb004b5000001/worklog/5210a64f846cb004b5000001';
+      superagent
+      	.put(URL)
+	.end(function (res) {
+	  expect(res.status).to.equal(404);
+	  done();
+	});
+    });
+
+    it('should respond 200 to PUT', function (done) {
+      models.Task.findOne({ status: 'Open' }, function (error, task) {
+				var worklogPayload = {
+					startedAt: moment('2014-01-01 10:00').toDate(),
+					timeSpent: 5400
+				};
+				URL.pathname = 'api/task/' + task.id + '/worklog/' + task.worklogs[0];
+				superagent
+					.put(URL)
+					.send({ worklog: worklogPayload })
+					.end(function (res) {
+						expect(res.status).to.equal(200);
+						done();
+				});
+      });
+    });
+
+		it('should respond 400 to PUT', function (done) {
+			models.Task.findOne({ status: 'Open' }, function (error, task) {
+				var worklogPayload = null; 
+				URL.pathname = 'api/task/' + task.id + '/worklog/' + task.worklogs[0];
+				superagent
+					.put(URL)
+					.send({ worklog: worklogPayload })
+					.end(function (res) {
+						expect(res.status).to.equal(400);
+						done();
+				});
+      });
+		});
+
+		it('should update a worklog successfully', function (done) {
+			models.Task.findOne({ status: 'Open' }, function (error, task) {
+				var worklogPayload = {
+					startedAt: moment('2014-01-01 10:00').toDate(),
+					timeSpent: 5400
+				};
+				URL.pathname = 'api/task/' + task.id + '/worklog/' + task.worklogs[0];
+				superagent
+					.put(URL)
+					.send({ worklog: worklogPayload })
+					.end(function (res) {
+						var worklogResponse = res.body.response;
+						expect(worklogResponse).to.be.ok();
+						expect(worklogResponse.message).to.equal("Worklog successfully updated.");
+
+						var data = worklogResponse.data;
+						expect(data).to.be.ok();
+						expect(moment(data.startedAt).isSame((moment('2014-01-01 10:00')))).to.be(true);
+						expect(data.timeSpent).to.equal(5400);
+						done();
+					});
+			});
+		});
+  });
+
   describe('/api/task/:task_id/worklog/:worklog_id (DEL)', function () {
 
     it('should respond 404 to DEL', function (done) {

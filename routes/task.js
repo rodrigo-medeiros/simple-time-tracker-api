@@ -13,6 +13,23 @@ exports.findByTaskId = function (req, res, next) {
   });
 };
 
+exports.findByWorklogId = function (req, res, next) {
+	var worklog_id = req.params.worklog_id,
+			task = req.task;
+	req.models.Worklog.findByIdAndTaskId(
+		{
+			id: worklog_id,
+			taskId: task.id
+		},
+		function (error, worklog) {
+			if (error) return next(error);
+			if (!worklog)
+				return res.status(404).end();
+			req.worklog = worklog;
+			next();
+		});
+};
+
 exports.getTask = function (req, res, next) {
   var task = req.task;
   res.json({ task: task });
@@ -39,6 +56,23 @@ exports.add = function (req, res, next) {
       response: {
         message: "Task successfully added.",
         data: taskResponse
+      }
+    });
+  });
+};
+
+exports.edit = function (req, res, next) {
+  var task = req.task,
+      taskPayload = req.body.task;
+  if (!taskPayload) return res.status(400).json({ error: "No task payload." });
+
+  task.set(taskPayload);
+  task.save(function (error, taskResponse) {
+    if (error) return next(error);
+    res.json({
+      response: {
+        message: "Task successfully updated.",
+        data: taskResponse.toJSON()
       }
     });
   });
@@ -97,18 +131,35 @@ exports.addWorklog = function (req, res, next) {
     worklog,
     function (error, worklogResponse) {
       if (error) return next(error);
-      var worklog = new req.models.Worklog(worklogResponse);
       task.worklogs.push(worklogResponse.id);
       task.save(function (error, taskResponse) {
         if (error) return next(error);
         res.json({
           response: {
             message: "Worklog successfully added.",
-            data: worklog
+            data: worklogResponse
           }
         });
       });
-  });
+		}
+	);
+};
+
+exports.editWorklog = function (req, res, next) {
+	var worklog = req.worklog,
+			worklogPayload = req.body.worklog;
+	if (!worklogPayload) return res.status(400).json({ error: "No worklog payload." });
+
+	worklog.set(worklogPayload);
+	worklog.save(function (error, worklogResponse) {
+		if (error) return next(error);
+		res.json({
+			response: {
+				message: "Worklog successfully updated.",
+				data: worklogResponse
+			}
+		});
+	});
 };
 
 exports.deleteWorklog = function (req, res, next) {
@@ -128,23 +179,6 @@ exports.deleteWorklog = function (req, res, next) {
       });
     }
   );
-};
-
-exports.edit = function (req, res, next) {
-  var task = req.task,
-      taskPayload = req.body.task;
-  if (!taskPayload) return res.status(400).json({ error: "No task payload." });
-
-  task.set(taskPayload);
-  task.save(function (error, taskResponse) {
-    if (error) return next(error);
-    res.json({
-      response: {
-        message: "Task successfully updated.",
-        data: taskResponse.toJSON()
-      }
-    });
-  });
 };
 
 function deleteWorklogs (req, callback) {

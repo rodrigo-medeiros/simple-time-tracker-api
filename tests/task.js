@@ -2,6 +2,7 @@ var boot = require('../app').boot,
     shutdown = require('../app').shutdown,
     port = require('../app').port,
     models = require('../models'),
+		ObjectId = require('mongoose').Types.ObjectId,
     environment = require('./test-environment'),
     url = require('url'),
     superagent = require('superagent'),
@@ -78,12 +79,12 @@ describe('Task routes', function () {
             var taskResponse = res.body.response;
             expect(taskResponse.message).to.be.equal("Task successfully added.");
 
-	    var task = taskResponse.data;
-	    expect(task).to.be.ok();
-            expect(task).to.only.have.keys('id', 'name', 'description', 'status', 'user', 'worklogs');
-	    expect(task.name).to.equal("Go to Bravos");
-	    expect(task.description).to.equal("I need to learn how to became a killer.");
-	    expect(task.user).to.equal(user.id);
+						var task = taskResponse.data;
+						expect(task).to.be.ok();
+									expect(task).to.only.have.keys('id', 'name', 'description', 'status', 'user', 'worklogs');
+						expect(task.name).to.equal("Go to Bravos");
+						expect(task.description).to.equal("I need to learn how to became a killer.");
+						expect(task.user).to.equal(user.id);
             done();
           });
       });
@@ -93,7 +94,7 @@ describe('Task routes', function () {
   describe('/api/task/:task_id (GET)', function () {
 
     it('should respond 404 to GET', function (done) {
-      URL.pathname = 'api/task/5210a64f846cb004b5000001';
+      URL.pathname = 'api/task/' + new ObjectId();
 
       superagent
         .get(URL)
@@ -105,7 +106,7 @@ describe('Task routes', function () {
 
     it('should respond 200 to GET', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id;
+        URL.pathname = 'api/task/' + task.id;
         superagent
           .get(URL)
           .end(function (res) {
@@ -118,7 +119,7 @@ describe('Task routes', function () {
 
     it('should return the task', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id;
+        URL.pathname = 'api/task/' + task.id;
         superagent
           .get(URL)
           .end(function (res) {
@@ -131,7 +132,7 @@ describe('Task routes', function () {
 
     it('should have a user attribute', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id;
+        URL.pathname = 'api/task/' + task.id;
         superagent
           .get(URL)
           .end(function (res) {
@@ -148,7 +149,7 @@ describe('Task routes', function () {
   describe('/api/task/:task_id (PUT)', function () {
 
     it('should respond 404 to PUT', function (done) {
-      URL.pathname = 'api/task/5210a64f846cb004b5000001';
+      URL.pathname = 'api/task/' + new ObjectId();
       superagent
         .put(URL)
         .end(function (res) {
@@ -159,7 +160,7 @@ describe('Task routes', function () {
 
     it('should respond 200 to PUT', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id;
+        URL.pathname = 'api/task/' + task.id;
         var taskPayload = {
           status: 'In Progress'
         };
@@ -176,7 +177,7 @@ describe('Task routes', function () {
 
     it('should update a task successfully', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id;
+        URL.pathname = 'api/task/' + task.id;
         var taskPayload = {
           name: "Kill the Lannisters NOW!",
           status: 'Open'
@@ -206,7 +207,7 @@ describe('Task routes', function () {
   describe('/api/task/:task_id (DEL)', function () {
 
     it('should respond 404 to DEL', function (done) {
-      URL.pathname = 'api/task/5210a64f846cb004b5000001';
+      URL.pathname = 'api/task/' + new ObjectId();
       superagent
         .del(URL)
         .end(function (res) {
@@ -254,7 +255,7 @@ describe('Task routes', function () {
 
     it('should respond 400 to POST', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id + '/worklog';
+        URL.pathname = 'api/task/' + task.id + '/worklog';
 
         superagent
           .post(URL)
@@ -267,7 +268,7 @@ describe('Task routes', function () {
 
     it('should respond 200 to POST', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-      URL.pathname = 'api/task/' + task._id + '/worklog';
+      URL.pathname = 'api/task/' + task.id + '/worklog';
       var worklog = {
         startedAt: moment('2014-01-01 13:05').toDate(),
         timeSpent: 1800
@@ -285,11 +286,11 @@ describe('Task routes', function () {
 
     it('should insert a worklog successfully', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-      URL.pathname = 'api/task/' + task._id + '/worklog';
+      URL.pathname = 'api/task/' + task.id + '/worklog';
       var worklog = {
         startedAt: moment('2014-01-01 13:05').toDate(),
         timeSpent: 1800,
-        task: task._id,
+        task: task.id,
         user: task.user
       };
 
@@ -309,7 +310,7 @@ describe('Task routes', function () {
   describe('/api/task/:task_id/worklog (GET)', function () {
 
     it('should respond 404 when GET', function (done) {
-      URL.pathname = 'api/task/5210a64f846cb004b5000001/worklog';
+      URL.pathname = 'api/task/' + new ObjectId() + '/worklog';
       superagent
         .get(URL)
         .end(function (res) {
@@ -320,7 +321,7 @@ describe('Task routes', function () {
 
     it('should respond 200 when GET', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id + '/worklog';
+        URL.pathname = 'api/task/' + task.id + '/worklog';
         superagent
           .get(URL)
           .end(function (res) {
@@ -332,7 +333,7 @@ describe('Task routes', function () {
 
     it('should return one worklog when GET', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id + '/worklog';
+        URL.pathname = 'api/task/' + task.id + '/worklog';
         superagent
           .get(URL)
           .end(function (res) {
@@ -354,7 +355,7 @@ describe('Task routes', function () {
   describe('/api/task/:task_id/worklog/:worklog_id (GET)', function () {
 
     it('should respond 404 when GET', function (done) {
-      URL.pathname = 'api/task/5210a64f846cb004b5000001/worklog/5210a64f846cb004b5000001';
+      URL.pathname = 'api/task/' + new ObjectId() + '/worklog/' + ObjectId();
       superagent
         .get(URL)
         .end(function (res) {
@@ -365,7 +366,7 @@ describe('Task routes', function () {
 
     it('should respond 200 when GET', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id + '/worklog/' + task.worklogs[0];
+        URL.pathname = 'api/task/' + task.id + '/worklog/' + task.worklogs[0];
         superagent
           .get(URL)
           .end(function (res) {
@@ -377,7 +378,7 @@ describe('Task routes', function () {
 
     it('should return one worklog when GET', function (done) {
       models.Task.findOne({ status: 'Open' }, function (error, task) {
-        URL.pathname = 'api/task/' + task._id + '/worklog/' + task.worklogs[0];
+        URL.pathname = 'api/task/' + task.id + '/worklog/' + task.worklogs[0];
         superagent
           .get(URL)
           .end(function (res) {
@@ -393,7 +394,7 @@ describe('Task routes', function () {
   describe('/api/task/:task_id/worklog/:worklog_id (PUT)', function () {
 
     it('should respond 404 to PUT', function (done) {
-      URL.pathname = 'api/task/5210a64f846cb004b5000001/worklog/5210a64f846cb004b5000001';
+      URL.pathname = 'api/task/' + new ObjectId() + '/worklog/' + new ObjectId();
       superagent
       	.put(URL)
 	.end(function (res) {
@@ -461,7 +462,7 @@ describe('Task routes', function () {
   describe('/api/task/:task_id/worklog/:worklog_id (DEL)', function () {
 
     it('should respond 404 to DEL', function (done) {
-      URL.pathname = 'api/task/5210a64f846cb004b5000001/worklog/5210a64f846cb004b5000001';
+      URL.pathname = 'api/task/' + new ObjectId() + '/worklog/' + new ObjectId();
       superagent
         .del(URL)
         .end(function (res) {

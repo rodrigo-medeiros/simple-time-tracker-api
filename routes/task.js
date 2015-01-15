@@ -104,31 +104,20 @@ exports.getWorklogs = function (req, res, next) {
 };
 
 exports.getWorklog = function (req, res, next) {
-  var task = req.task,
-      worklogId = req.params.worklog_id;
-  req.models.Worklog.findByIdAndTaskId(
-    {
-      id: worklogId,
-      taskId: task.id
-    },
-    function (error, worklog) {
-      if (error) return next(error);
-      if (!worklog)
-        return res.status(404).end();
-      res.json({ worklog: worklog });
-  });
+	var worklog = req.worklog;
+	res.json({ worklog: worklog });
 };
 
 exports.addWorklog = function (req, res, next) {
-  var worklog = req.body.worklog,
+  var worklogPayload = req.body.worklog,
       task = req.task;
-  if (!worklog) return res.status(400).json({ error: "No worklog payload." });
+  if (!worklogPayload) return res.status(400).json({ error: "No worklog payload." });
 
-  worklog.task = task.id;
-  worklog.user = task.user;
+  worklogPayload.task = task.id;
+  worklogPayload.user = task.user;
 
   req.models.Worklog.create(
-    worklog,
+    worklogPayload,
     function (error, worklogResponse) {
       if (error) return next(error);
       task.worklogs.push(worklogResponse.id);
@@ -163,22 +152,12 @@ exports.editWorklog = function (req, res, next) {
 };
 
 exports.deleteWorklog = function (req, res, next) {
-  var task = req.task,
-      worklogId = req.params.worklog_id;
-  req.models.Worklog.findByIdAndTaskId(
-    {
-      id: worklogId,
-      taskId: task.id
-    },
-    function (error, worklog) {
-      if (error) return next(error);
+	var worklog = req.worklog;
 
-      worklog.remove(function (error, doc) {
-        if (error) return next(error);
-        res.status(204).end();
-      });
-    }
-  );
+	worklog.remove(function (error, doc) {
+		if (error) return next(error);
+		res.status(204).end();
+	});
 };
 
 function deleteWorklogs (req, callback) {

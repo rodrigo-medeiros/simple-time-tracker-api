@@ -67,12 +67,12 @@ exports.edit = function (req, res, next) {
   if (!taskPayload) return res.status(400).json({ error: "No task payload." });
 
   task.set(taskPayload);
-  task.update(function (error, numUpdated, taskResponse) {
+  task.save(function (error, taskResponse) {
     if (error) return next(error);
     res.json({
       response: {
         message: "Task successfully updated.",
-        data: task
+        data: taskResponse
       }
     });
   });
@@ -140,12 +140,12 @@ exports.editWorklog = function (req, res, next) {
 	if (!worklogPayload) return res.status(400).json({ error: "No worklog payload." });
 
 	worklog.set(worklogPayload);
-	worklog.update(function (error, numUpdated, worklogResponse) {
+	worklog.save(function (error, worklogResponse) {
 		if (error) return next(error);
 		res.json({
 			response: {
 				message: "Worklog successfully updated.",
-				data: worklog
+				data: worklogResponse
 			}
 		});
 	});

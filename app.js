@@ -6,7 +6,7 @@ var express = require('express'),
     http = require('http'),
     mongoose = require('mongoose'),
     models = require('./models'),
-    dbUrl = process.env.MONGOHQ_URL || 'mongodb://@localhost:27017/simple_time_tracker',
+    dbUrl = process.env.MONGOHQ_URL || 'mongodb://localhost/simple_time_tracker',
     db = mongoose.connect(dbUrl, {safe: true});
 
 var app = express();
@@ -71,7 +71,7 @@ var boot = function (done) {
     if ('development' !== app.get('env')) {
       console.info('Express server listening on port ' + app.get('port'));
     }
-    done();
+    if (typeof done === 'function') done();
   });
 };
 

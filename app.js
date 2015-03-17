@@ -3,6 +3,7 @@ var express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
     errorhandler = require('errorhandler'),
+    cors = require('cors'),
     http = require('http'),
     mongoose = require('mongoose'),
     models = require('./models'),
@@ -10,14 +11,8 @@ var express = require('express'),
     db = mongoose.connect(dbUrl, {safe: true});
 
 var app = express();
-var allowCrossDomain = function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-};
 
-app.use(allowCrossDomain);
+app.use(cors());
 
 app.use(function (req, res, next) {
   if (!models.User || !models.Task || !models.Worklog) return next(new Error('There are no models.'));
